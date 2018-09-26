@@ -14,8 +14,34 @@ header{
 	display:flex;
 	width: 100%;
 	overflow: hidden;
-	margin-bottom: -10px;
+	top: 0;
+	right: 0;
+	position: fixed;
 }
+
+#cont{
+	margin-top: 150px
+	left:0;
+	width: 100%;
+}
+
+#menu{
+	margin-left: 20px;
+	width: 220px;
+	bottom: 80px;
+	overflow: auto;
+	position: fixed;
+}
+
+#pie{
+	font-size: 18px;
+	position: fixed;
+	bottom: 0;
+	text-align: center;
+	width: 100%;
+	left:0;
+}
+
 
 #aux{
 	margin-top: 50px;
@@ -31,30 +57,32 @@ header{
 }
 
 #logo{
-	width: 300px;
+	width: 250px;
 	height: auto;
 	padding-left: 0;
 }
 
 #carrito{
-	width: 80px;
-	height: 80px;
+	width: 60px;
+	height: 60px;
 	margin-left: 30px;
 	margin-bottom: -20px;
+}
+
+#top{
+	font-size: 16px;
+	height: 30px;
 }
 
 #micuenta{
 	margin-left: 800px;
 }
 
-#menu{
-	margin-left: 20px;
-	width: 300px;
-}
+
 
 h1{
 	font-family:'letra-bonita', serif;
-	font-size: 30px;
+	font-size: 25px;
 }
 
 li {
@@ -63,13 +91,9 @@ li {
 
 }
 
-#pie{
-	text-align: center;
-	font-size: 20px;
-}
 
 #iconos{
 	width: auto;
 	height: 30px;
-	margin-top: -30px;
+	margin-top: -50px;
 }
