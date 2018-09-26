@@ -20,17 +20,51 @@ header{
 }
 
 #cont{
-	margin-top: 150px
+	margin-top: 150px;
 	left:0;
 	width: 100%;
+}
+
+#contenido{
+	margin-left: 240px;
+	overflow: auto;
+	position: fixed;
+	height: 500px;
+	width: 100%;
+	margin-top:20px;
+}
+
+#titulo{
+	font-size: 22px;
+	margin-left: 540px;
+	font-family:'letra-bonita', serif;
+}
+
+.imgs{
+	width: 200px;
+	height: auto;
+}
+
+.fila{
+	display:flex;
+	text-align: center;
+	margin-top: 40px;
+	margin-left: 100px;
+}
+
+.pelicula{
+	font-size: 18px;
+	margin-left: 100px;
+	margin-bottom: 50px;
+	line-height: 5px;
 }
 
 #menu{
 	margin-left: 20px;
 	width: 220px;
-	bottom: 80px;
 	overflow: auto;
 	position: fixed;
+	height: 500px;
 }
 
 #pie{
@@ -51,8 +85,8 @@ header{
 .botones{
 	background-color: #d9eeff;
 	border:1px solid black;
-	font-size: 20px;
-	height: 40px;
+	font-size: 14px;
+	height: 20px;
 	border-radius: 10px 10px 10px 10px;
 }
 
@@ -76,6 +110,8 @@ header{
 
 #micuenta{
 	margin-left: 800px;
+	font-size: 20px;
+	height: 40px;
 }
 
 
@@ -90,7 +126,6 @@ li {
 	font-size: 18px;
 
 }
-
 
 #iconos{
 	width: auto;
