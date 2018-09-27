@@ -80,17 +80,10 @@ header{
 	margin-left: 300px;
 }
 
-#micuenta{
-	margin-left: 0;
-	font-size: 20px;
-	height: 40px;
-}
-
 #carrito{
 	width: 60px;
 	height: 60px;
 	margin-left: 30px;
-	margin-bottom: -20px;
 }
 
 /***************** MENU *********************/
@@ -119,10 +112,6 @@ li {
 	font-size: 18px;
 }
 
-#top{
-	font-size: 16px;
-	height: 30px;
-}
 
 /***************** PIE *********************/
 
@@ -138,28 +127,26 @@ li {
 #iconos{
 	width: auto;
 	height: 30px;
-	margin-top: -50px;
+	margin-top: -30px;
 }
 
 /***************** CONTENIDO *********************/
 
 #contenido{
-	margin-left: 240px;
+	margin-left: 265px;
 	overflow: auto;
 	position: fixed;
 	height: 500px;
 	width: 100%;
-	margin-top:20px;
+	margin-top:0;
 }
+
+
+/** PPAL **/
 
 #tema{
-	display: flex;
-}
-
-#titulo{
 	font-size: 22px;
 	margin-left: 540px;
-	font-family:'letra-bonita', serif;
 }
 
 .fila{
@@ -181,13 +168,113 @@ li {
 	height: auto;
 }
 
+/** DESCRIPCION PELICULA **/
+
+#titulo{
+	font-size: 28px;
+}
+
+#desc-peli{
+	display: flex;
+	height: 500px;
+	width: 100%;
+}
+
+#caratula{
+	width: 300px;
+	height: 400px;
+	margin-left: 200px;
+	margin-top: 10px;
+}
+
+#desc{
+	margin-left: 50px;
+	width: 350px;
+}
+
+#resumen{
+	overflow: auto;
+	height: 250px;
+}
+
+#precio{
+	font-size: 22px;
+}
+
+#cantidad{
+	margin-right: 30px;
+	border:1px solid black;
+}
+
+/** MI CUENTA **/
+
+#datos{
+	margin-top: 20px;
+	margin-left: 40px;
+	line-height: 7px;
+}
+
+#infoper{
+	font-size:35px;
+	line-height: 16px;
+}
+
+#per{
+	margin-top: 35px;
+}
+
+#historial{
+	margin-top: 30px;
+	margin-left: 40px;
+}
+
+#hist{
+	font-size:35px;
+}
+
+#pedidos{
+	border-collapse: collapse;
+	margin-top: 15px;
+	width: 70%;
+}
+
+#pedidos td, #pedidos th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+}
+
+#pedidos tr:nth-child(even) {
+    background-color: #d9eeff;
+}
+
+#out{
+	margin-top: 40px;
+	margin-left: 40px;
+	font-size: 16px;
+	height: 30px;
+}
+
 /***************** GENERAL *********************/
 
 .botones{
 	background-color: #d9eeff;
 	border:1px solid black;
+	border-radius: 10px 10px 10px 10px;
 	font-size: 14px;
 	height: 20px;
-	border-radius: 10px 10px 10px 10px;
 }
 
+#mini-boton{
+}
+
+#normal-boton{
+	font-size: 16px;
+	height: 30px;
+}
+
+#max-boton{
+	margin-left: 0;
+	font-size: 20px;
+	height: 40px;
+}
