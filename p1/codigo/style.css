@@ -10,6 +10,8 @@ body{
     color: black;
 }
 
+/*************** HEAD *********************/
+
 header{
 	display:flex;
 	width: 100%;
@@ -19,11 +21,127 @@ header{
 	position: fixed;
 }
 
+#cabecera{
+	display: flex;
+	height: auto;
+}
+
+#logo{
+	width: auto;
+	height: 150px;
+	padding-left: 0;
+}
+
+#head-center{
+	-webkit-appearance: none;
+	border-radius: 5px 0px 0px 5px;
+	height: 40px;
+	text-indent: 5px;
+	float: center;
+	text-align: center;
+	margin-left: 300px;
+	display: flex;
+	border:1px solid black;
+	width: auto;
+	margin-top: 63px;
+}
+
+#filtro{
+	-webkit-appearance: none;
+	border-radius: 5px 0px 0px 5px;
+	background-color: #d9eeff;
+	height: auto;
+	width:auto;
+	text-indent: 10px;
+}
+
+#text-buscar{
+	border:1px solid black;
+	color: black;
+	width:auto;
+	height: auto;
+
+}
+
+#boton-buscar{
+	border-radius: 0px 5px 5px 0px;
+	background-color: #d9eeff;
+	height: auto;
+	width:40px;
+	-webkit-appearance: none;
+	margin-left: -2px;
+	border:1px solid black;
+}
+
+
+#head-right{
+	margin-top: 50px;
+	float: right;
+	margin-left: 300px;
+}
+
+#micuenta{
+	margin-left: 0;
+	font-size: 20px;
+	height: 40px;
+}
+
+#carrito{
+	width: 60px;
+	height: 60px;
+	margin-left: 30px;
+	margin-bottom: -20px;
+}
+
+/***************** MENU *********************/
+
 #cont{
 	margin-top: 150px;
 	left:0;
 	width: 100%;
 }
+
+#menu{
+	margin-left: 20px;
+	width: 245px;
+	overflow: auto;
+	position: fixed;
+	height: 500px;
+}
+
+#categorias{
+	font-size: 30px;
+	font-family:'letra-bonita', serif;
+}
+
+li {
+	padding-bottom: 10px;
+	font-size: 18px;
+}
+
+#top{
+	font-size: 16px;
+	height: 30px;
+}
+
+/***************** PIE *********************/
+
+#pie{
+	font-size: 18px;
+	position: fixed;
+	bottom: 0;
+	text-align: center;
+	width: 100%;
+	left:0;
+}
+
+#iconos{
+	width: auto;
+	height: 30px;
+	margin-top: -50px;
+}
+
+/***************** CONTENIDO *********************/
 
 #contenido{
 	margin-left: 240px;
@@ -34,15 +152,14 @@ header{
 	margin-top:20px;
 }
 
+#tema{
+	display: flex;
+}
+
 #titulo{
 	font-size: 22px;
 	margin-left: 540px;
 	font-family:'letra-bonita', serif;
-}
-
-.imgs{
-	width: 200px;
-	height: auto;
 }
 
 .fila{
@@ -59,28 +176,12 @@ header{
 	line-height: 5px;
 }
 
-#menu{
-	margin-left: 20px;
-	width: 220px;
-	overflow: auto;
-	position: fixed;
-	height: 500px;
+.imgs{
+	width: 200px;
+	height: auto;
 }
 
-#pie{
-	font-size: 18px;
-	position: fixed;
-	bottom: 0;
-	text-align: center;
-	width: 100%;
-	left:0;
-}
-
-
-#aux{
-	margin-top: 50px;
-	float: right;
-}
+/***************** GENERAL *********************/
 
 .botones{
 	background-color: #d9eeff;
@@ -90,45 +191,3 @@ header{
 	border-radius: 10px 10px 10px 10px;
 }
 
-#logo{
-	width: 250px;
-	height: auto;
-	padding-left: 0;
-}
-
-#carrito{
-	width: 60px;
-	height: 60px;
-	margin-left: 30px;
-	margin-bottom: -20px;
-}
-
-#top{
-	font-size: 16px;
-	height: 30px;
-}
-
-#micuenta{
-	margin-left: 800px;
-	font-size: 20px;
-	height: 40px;
-}
-
-
-
-h1{
-	font-family:'letra-bonita', serif;
-	font-size: 25px;
-}
-
-li {
-	padding-bottom: 10px;
-	font-size: 18px;
-
-}
-
-#iconos{
-	width: auto;
-	height: 30px;
-	margin-top: -50px;
-}
