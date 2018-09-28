@@ -116,18 +116,19 @@ li {
 /***************** PIE *********************/
 
 #pie{
-	font-size: 18px;
+	font-size: 16px;
 	position: fixed;
 	bottom: 0;
 	text-align: center;
 	width: 100%;
 	left:0;
 	background-color: white;
+	height: 70px;
 }
 
 #iconos{
 	width: auto;
-	height: 30px;
+	height: 25px;
 	margin-top: -30px;
 }
 
@@ -145,9 +146,21 @@ li {
 
 /** PPAL **/
 
+#head-tema{
+	display: flex;
+	margin-left:150px;
+}
+
+#linea{
+	height: 2px;
+  	width: 300px;
+  	background-color: black;
+}
+
 #tema{
 	font-size: 22px;
-	margin-left: 540px;
+	margin-left: 50px;
+	margin-right: 50px;
 }
 
 .fila{
@@ -168,6 +181,7 @@ li {
 	width: 200px;
 	height: auto;
 }
+
 
 /** DESCRIPCION PELICULA **/
 
@@ -209,9 +223,12 @@ li {
 
 /** MI CUENTA **/
 
+#micuenta{
+	margin-left: 100px;
+	margin-top: 30px;
+}
+
 #datos{
-	margin-top: 20px;
-	margin-left: 40px;
 	line-height: 7px;
 }
 
@@ -226,7 +243,6 @@ li {
 
 #historial{
 	margin-top: 30px;
-	margin-left: 40px;
 }
 
 #pedidos{
@@ -241,22 +257,25 @@ li {
     padding: 8px;
 }
 
+#pedidos th {
+	background-color: #d9eeff;
+}
+
 #pedidos tr:nth-child(even) {
-    background-color: #d9eeff;
+    background-color: #f2f9ff;
 }
 
 #out{
 	margin-top: 40px;
-	margin-left: 40px;
 	font-size: 16px;
 	height: 30px;
 }
 
-/** MI CUENTA **/
+/** INICIAR SESION **/
 
 #inicio-sesion{
 	display: flex;
-	margin-left: 200px;
+	margin-left: 150px;
 	margin-top: 20px;
 }
 
@@ -266,11 +285,20 @@ li {
 }
 
 .input{
-	width: 100%;
+	width: 300px;
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
+}
+
+/* REGISTRAR USUARIO*/
+#datos-registro{
+	margin-left: 150px;
+	margin-top: 20px;
+}
+
+.check-box{
 }
 
 /***************** GENERAL *********************/
