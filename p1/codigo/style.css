@@ -328,3 +328,13 @@ li {
 .max-letra{
 	font-size:30px;
 }
+
+
+/********ENLACES**********/
+
+a:link{
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: underline;
+}
