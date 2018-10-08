@@ -318,7 +318,10 @@ li {
 	height: 30px;
 }
 
-#max-boton{
+.max-boton{
+	background-color: #d9eeff;
+	border:1px solid black;
+	border-radius: 10px 10px 10px 10px;
 	margin-left: 0;
 	font-size: 20px;
 	height: 40px;
