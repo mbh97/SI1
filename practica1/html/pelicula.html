@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
+		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css"  href="../css/style.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -32,7 +33,7 @@
 	      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
 					</div>
 					<div id="head-right">
-						<a href="micuenta.html"><input type="button" value="Mi cuenta" class="botones" id="max-boton"></a>
+						<input type="button" value="Mi cuenta" class="max-boton" onClick=" window.location.href='micuenta.html">
 						<img src="../imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
 				</div>
@@ -66,21 +67,21 @@
 						<li><a href="categoria.html">Suspense</a></li>
 						<li><a href="categoria.html">Terror</a></li>
 					</ul>
-					<a href="categoria.html"><input type="button" value="TOP VENTAS" class="botones" id="normal-boton"></a>
+					<input type="button" value="TOP VENTAS" class="normal-boton" onClick=" window.location.href='categoria.html">
 				</div>
 
 				<div id="contenido">
 					<div id="desc-peli">
-						<img src="../imgs/peli5.jpeg" id="caratula">
+						<img src="../imgs/peli5.jpeg" id="caratula" alt="caratula">
 						<div id="desc">
 							<b id="titulo">Mamma Mia!</b>
 							<div id="resumen">
 							<p>Donna se enamora de Sam mientras vive una serie de aventuras por Europa en 1979. En el presente, la hija de Donna, embarazada, se reúne con los viejos amigos y amantes de su madre en la isla griega de Kalokairi.
-							</br></p>
+							</p>
 							</div>
 							<p id="precio">8,99 €</p>
 							<input type="number" name="quantity" min="1" max="30" step="1" value="1" id="cantidad">
-	   						<input type="submit" value="Añadir al carrito" class="botones" id="normal-boton">
+	   						<input type="submit" value="Añadir al carrito" class="normal-boton">
 						</div>
 					</div>
 				</div>
@@ -88,7 +89,7 @@
 			<footer>
 					<div id="pie">
 						<p>Puedes seguirnos en </p>
-						<img src="../imgs/iconos.png" id="iconos">
+						<img src="../imgs/iconos.png" id="iconos" alt="iconos">
 					</div>
 			</footer>
 	</body>

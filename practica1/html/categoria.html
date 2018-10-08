@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
+		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css"  href="../css/style.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -32,7 +33,7 @@
 	      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
 					</div>
 					<div id="head-right">
-						<a href="sesion.html"><input type="button" value="Mi cuenta" class="botones" id="max-boton"></a>
+						<input type="button" value="Mi cuenta" class="max-boton" onClick=" window.location.href='sesion.html">
 						<img src="../imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
 				</div>
@@ -66,12 +67,12 @@
 						<li><a href="categoria.html">Suspense</a></li>
 						<li><a href="categoria.html">Terror</a></li>
 					</ul>
-					<a href="categoria.html"><input type="button" value="TOP VENTAS" class="botones" id="normal-boton"></a>
+					<input type="button" value="TOP VENTAS" class="normal-boton" onClick=" window.location.href='categoria.html">
 				</div>
 
 				<div id="contenido">
 					<div id="head-tema">
-						<hr/ id="linea"><b id="tema">Categoria/TOP</b><hr/ id="linea">
+						<hr class="linea"><b id="tema">Categoria/TOP</b><hr class="linea">
 					</div>
 					<div class="fila">
 						<div class="pelicula">
@@ -119,7 +120,7 @@
 			<footer>
 					<div id="pie">
 						<p>Puedes seguirnos en </p>
-						<img src="../imgs/iconos.png" id="iconos">
+						<img src="../imgs/iconos.png" id="iconos" alt="iconos">
 					</div>
 			</footer>
 	</body>

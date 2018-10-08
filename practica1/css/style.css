@@ -310,10 +310,10 @@ li {
 	height: 20px;
 }
 
-#mini-boton{
-}
-
-#normal-boton{
+.normal-boton{
+	background-color: #d9eeff;
+	border:1px solid black;
+	border-radius: 10px 10px 10px 10px;
 	font-size: 16px;
 	height: 30px;
 }

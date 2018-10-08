@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
+		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css"  href="../css/style.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -32,7 +33,7 @@
 	      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
 					</div>
 					<div id="head-right">
-						<a href="micuenta.html"><input type="button" value="Mi cuenta" class="botones" id="max-boton"></a>
+						<input type="button" value="Mi cuenta" class="max-boton" onClick=" window.location.href='micuenta.html">
 						<img src="../imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
 				</div>
@@ -66,7 +67,7 @@
 						<li><a href="categoria.html">Suspense</a></li>
 						<li><a href="categoria.html">Terror</a></li>
 					</ul>
-					<a href="categoria.html"><input type="button" value="TOP VENTAS" class="botones" id="normal-boton"></a>
+					<input type="button" value="TOP VENTAS" class="normal-boton" onClick=" window.location.href='categoria.html">
 				</div>
 
 				<div id="contenido">
@@ -78,24 +79,23 @@
 							<p>Contraseña</p>
 							<input type="password" name="contraseña" class="input" placeholder="Contraseña">
 							<br><br><br>
-							<input type="button" value="INICIAR SESION" class="botones" id="normal-boton">
+							<input type="button" value="INICIAR SESION" class="normal-boton">
 						</div>
 
 						<div id="no-registrado">
 							<b class="max-letra">Quiero ser usuario</b>
 							<p>Si todavia no tienes una cuenta de usuario utiliza esta opción para acceder al formulario de registro.</p>
 							<br>
-							<a href="registro.html"><input type="button" value="CREAR CUENTA" class="botones" id="normal-boton"></a>
+							<input type="button" value="CREAR CUENTA" class="normal-boton" onClick=" window.location.href='registro.html">
 						</div>
 
 					</div>
 					</div>
 				</div>
-			</div>
 			<footer>
 					<div id="pie">
 						<p>Puedes seguirnos en </p>
-						<img src="../imgs/iconos.png" id="iconos">
+						<img src="../imgs/iconos.png" id="iconos" alt="iconos">
 					</div>
 			</footer>
 	</body>
