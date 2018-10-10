@@ -54,11 +54,18 @@ def buscar():
 		return render_template('pelicula.html', content = peli)
 	return render_template('pelicula.html', content = peli)
 
-@app.route('/sesion.html')
+@app.route('/sesion')
 def micuenta():
 	content_dict = {}
 	return render_template('sesion.html', content = content_dict)
 
+@app.route('/top_ventas')
+def top():
+	content_dict = {}
+	top = sorted(catalogo['peliculas'], key=lambda x: -int(x['ventas']))
+	content_dict['categoriaActual'] = 'TOP VENTAS'
+	content_dict['peliculas'] = top[:10]
+	return render_template('index.html', content = content_dict)
 
 if __name__ == '__main__':
 	app.run(debug = True)
