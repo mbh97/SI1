@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request ,redirect
 import json
 
 app = Flask(__name__)
@@ -28,13 +28,31 @@ def encontrar_peli(peliculas, titulo):
 	for peli in peliculas:
 		if peli['titulo'] == titulo:
 			return peli
-
-	return null
+	return None
 
 @app.route('/<categoria>/<pelicula>')
 def pelicula(categoria, pelicula):
 	content = encontrar_peli(catalogo['peliculas'], pelicula.replace ("%20", ""))
 	return render_template('pelicula.html', content=content)
+
+@app.route('/search' ,methods=['POST'])
+def buscar():
+	titulo = request.form['titulo']
+	if 'FiltrarPorGenero' not in request.form:
+		if titulo == "":
+			return index()
+		peli = encontrar_peli(catalogo['peliculas'],  titulo)
+		return render_template('pelicula.html', content=peli)
+	genero = request.form['FiltrarPorGenero']
+	if titulo == "":
+		return mostrar_categoria(genero)
+	peli = encontrar_peli(catalogo['peliculas'],  titulo)
+	if peli == None:
+		return render_template('pelicula.html', content = peli)
+	if in_categoria(peli,genero)==False:
+		peli = None
+		return render_template('pelicula.html', content = peli)
+	return render_template('pelicula.html', content = peli)
 
 if __name__ == '__main__':
 	app.run(debug = True)

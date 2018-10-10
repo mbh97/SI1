@@ -14,8 +14,6 @@ body{
 /*************** HEAD *********************/
 
 header{
-	display:flex;
-	justify-content: center;
 	width: 100%;
 	overflow: hidden;
 	top: 0;
@@ -24,6 +22,7 @@ header{
 }
 
 #cabecera{
+	justify-content: space-between;
 	display: flex;
 	height: auto;
 }
@@ -39,7 +38,6 @@ header{
 	height: 40px;
 	text-indent: 5px;
 	text-align: center;
-	margin-left: 300px;
 	display: flex;
 	border:1px solid black;
 	width: auto;
@@ -75,7 +73,7 @@ header{
 #head-right{
 	margin-top: 50px;
 	float: right;
-	margin-left: 300px;
+	padding-right: 0;
 }
 
 #carrito{
@@ -88,16 +86,15 @@ header{
 
 #cont{
 	margin-top: 150px;
-	left:0;
-	width: 100%;
+	display: flex;
 }
 
 #menu{
 	margin-left: 20px;
 	width: 245px;
 	overflow: auto;
-	position: fixed;
-	height: 67%;
+	height: 100%;
+	background-color: yellow;
 }
 
 #categorias{
@@ -121,7 +118,7 @@ li {
 	width: 100%;
 	left:0;
 	background-color: white;
-	height: 10%;
+	height: 70px;
 }
 
 #iconos{
@@ -133,12 +130,12 @@ li {
 /***************** CONTENIDO *********************/
 
 #contenido{
-	margin-left: 265px;
 	overflow: auto;
 	position: fixed;
 	height: 67%;
+	left: 265px;
+	background-color: blue;
 	width: 100%;
-	margin-top:0;
 
 }
 
@@ -147,7 +144,7 @@ li {
 
 #head-tema{
 	display: flex;
-	margin-left:150px;
+	justify-content: center;
 }
 
 .linea{
