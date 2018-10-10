@@ -31,7 +31,60 @@
 		      			</form>
 					</div>
 					<div id="head-right">
-						<input type="button" value="Mi cuenta" class="max-boton" onClick="window.location.href='html/sesion.html">
+						<form action="/sesion.html">
+    					<input type=submit value="Mi cuenta" class="max-boton">
+						</form>
+						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
+					</div>
+				</div>
+			</header>
+			<div id="cont">
+				<div id="menu">
+					<h1 id="categorias"><b>Categorias</b></h1>
+					<ul>
+						<li><a href="/categorias/Accion">Accion</a></li>
+						<li><a href="/categorias/Animacion">Animacion</a></li>
+						<li><a href="/categorias/Ficcion">Ficcion</a></li>
+						<li><a href="/categorias/Comedia">Comedia</a></li>
+						<li><a href="/categorias/Drama">Drama</a></li>
+						<li><a href="/categorias/Misterio">Misterio</a></li>
+						<li><a href="/categorias/Musical">Musical</a></li>
+						<li><a href="/categorias/Romantica">Romantica</a></li>
+					</ul>
+					<input type="button" value="TOP VENTAS" class="normal-boton" onClick=" window.location.href='html/categoria.html">
+				</div>
+
+				<div id="contenido">
+					<div id="head-tema">
+						<hr class="linea"><b id="tema">{{ content['categoriaActual'] }}</b><hr class="linea">
+					</div>
+					{% if content['peliculas'] %}
+						<div class="fila">
+						{% for peli in content['peliculas'] %}
+							<div class="pelicula">
+								<a href="/{{content['categoriaActual']}}/{{peli['titulo']}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
+								<p> {{peli['titulo']}}</p>
+								<p> {{peli['precio']}}</p>
+								<input type="button" value="Añadir al carrito" class="botones">
+							</div>
+							{% if loop.index == loop.last %}
+								</div>
+							{% else %}
+								{% if loop.index%3 == 0 %}
+									</div>
+									<div class="fila">
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</div>
+			<footer>
+					<div id="pie">
+						<p>Puedes seguirnos en </p>
+						<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
+					</div>
+			</footer>
+	</body>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
 				</div>

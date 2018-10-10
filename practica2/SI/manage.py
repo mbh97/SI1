@@ -54,5 +54,11 @@ def buscar():
 		return render_template('pelicula.html', content = peli)
 	return render_template('pelicula.html', content = peli)
 
+@app.route('/sesion.html')
+def micuenta():
+	content_dict = {}
+	return render_template('sesion.html', content = content_dict)
+
+
 if __name__ == '__main__':
 	app.run(debug = True)
