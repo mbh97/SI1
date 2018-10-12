@@ -6,7 +6,48 @@
 		<link rel="stylesheet" type="text/css"  href="../static/css/style.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<title>Inicio</title>
+		<title>Registro</title>
+
+		<script language="javascript">
+			function validarRegistro(){
+				var formulario = document.getElementsByName('formulario')[0],
+					nombre = formulario.nombre.value,
+					email = formulario.email.value,
+					contrasenna1 = formulario.email.contraseña1,
+					contrasenna2 = formulario.email.contraseña2,
+					tarjeta = formulario.email.tarjeta;
+
+					expresion_correo = /\w+@\w+\.+[a-z]/;
+					expresion_nombre = /^\S+\S$/;
+
+				if(nombre==""||tarjeta==""||email==""||contraseña1==""||contraseña2==""||tarjeta==""){
+					alert("Todos los campos son obligatorios.");
+					return false;
+				}
+				if(!expresion_correo.test(email)){
+					alert("El email introducido es erroneo.");
+					return false;
+				}
+				if(nombre.length < 2){
+					alert("El nombre debe contener al menos dos caracteres.");
+					return false;
+				}
+				if(!expresion_nombre.test(nombre)){
+					alert("No se permiten espacios en blanco al inicio y fin de nombre.");
+					return false;
+				}
+				if(contraseña1 != contraseña2){
+					alert("Las contraseñas no coinciden, revisalas!.");
+					return false;
+				}
+				if(isNaN(tarjeta) || tarjeta<0){
+					alert("La tarjeta ingresada no es correcta.");
+					return false;
+				}
+				
+				return true;
+			}
+		</script>
 	</head>
 
 	<body>
@@ -32,7 +73,7 @@
 					</div>
 					<div id="head-right">
 						<form action="/sesion">
-    					<input type="submit" value="Mi cuenta" class="max-boton">
+    					<input type="button" value="Mi cuenta" class="max-boton">
 						</form>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
@@ -52,33 +93,31 @@
 						<li><a href="/categorias/Romantica">Romantica</a></li>
 					</ul>
 					<form action="/top_ventas">
-						<input type="submit" value="TOP VENTAS" class="normal-boton">
+						<input type="button" value="TOP VENTAS" class="normal-boton">
 					</form>
 				</div>
 
 				<div id="contenido">
-					<div id="head-tema">
-						<hr class="linea"><b id="tema">{{ content['categoriaActual'] }}</b><hr class="linea">
+					<div id="datos-registro">
+					<form action="/registro_usuario" name="formulario" method="post" onsubmit="return validarInicio()">
+						<b class="max-letra">Escribe tus datos personales</b>
+						<p>Email
+						<input type="text" name="email" placeholder="Email" class="input"></p>
+						<p>Nombre de usuario
+						<input type="text" name="nombre" placeholder="Nombre" class="input"></p>
+						<p>Contraseña
+						<input type="password" name="contrasenna1" class="input" placeholder="Contraseña"></p>
+						<p>Repetir contraseña
+						<input type="password" name="contrasenna2" class="input" placeholder="Contraseña"></p>
+						<p>Tarjeta de crédito
+						<input type="text" name="tarjeta" placeholder="Tarjeta de crédito" class="input"></p>
+						<br>
+						<input type="checkbox" name="casilla1" class="check-box">  Quiero recibir novedades en mi email.<br>
+						<input type="checkbox" name="casilla2" class="check-box">  He leido y acepto la politica de privacidad.<br>
+						<br>
+						<input type="submit" value="REGISTRARSE" class="normal-boton">
+
 					</div>
-					{% if content['peliculas'] %}
-						<div class="fila">
-						{% for peli in content['peliculas'] %}
-							<div class="pelicula">
-								<a href="/peliculas/{{peli['titulo']}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
-								<p> {{peli['titulo']}}</p>
-								<p> {{peli['precio']}}</p>
-								<input type="submit" value="Añadir al carrito" class="botones">
-							</div>
-							{% if loop.index == loop.last %}
-								</div>
-							{% else %}
-								{% if loop.index%3 == 0 %}
-									</div>
-									<div class="fila">
-								{% endif %}
-							{% endif %}
-						{% endfor %}
-					{% endif %}
 				</div>
 			<footer>
 					<div id="pie">
@@ -98,3 +137,4 @@
 			</footer>
 	</body>
 </html>
+

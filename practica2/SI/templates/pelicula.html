@@ -12,7 +12,7 @@
 	<body>
 			<header>
 				<div id="cabecera">
-					<a href="../"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
+					<a href="/"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
 					<div id="head-center">
 						<form action="/search" name="buscador" method="post">
 							<select id=filtro name="FiltrarPorGenero">
@@ -31,7 +31,9 @@
 		      			</form>
 					</div>
 					<div id="head-right">
-						<input type="button" value="Mi cuenta" class="max-boton" onClick="window.location.href='html/sesion.html">
+						<form action="/sesion">
+    						<input type="submit" value="Mi cuenta" class="max-boton">
+						</form>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
 				</div>
@@ -49,7 +51,9 @@
 						<li><a href="/categorias/Musical">Musical</a></li>
 						<li><a href="/categorias/Romantica">Romantica</a></li>
 					</ul>
-					<input type="button" value="TOP VENTAS" class="normal-boton" onClick=" window.location.href='html/categoria.html">
+					<form action="/top_ventas">
+						<input type="submit" value="TOP VENTAS" class="normal-boton">
+					</form>
 				</div>
 
 				<div id="contenido">
