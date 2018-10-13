@@ -13,14 +13,14 @@
 				var formulario = document.getElementsByName('formulario')[0],
 					nombre = formulario.nombre.value,
 					email = formulario.email.value,
-					contrasenna1 = formulario.email.contraseña1,
-					contrasenna2 = formulario.email.contraseña2,
-					tarjeta = formulario.email.tarjeta;
+					contrasenna1 = formulario.contrasenna1.value,
+					contrasenna2 = formulario.contrasenna2.value,
+					tarjeta = formulario.tarjeta.value,
 
-					expresion_correo = /\w+@\w+\.+[a-z]/;
+					expresion_correo = /\w+@\w+\.+[a-z]/,
 					expresion_nombre = /^\S+\S$/;
 
-				if(nombre==""||tarjeta==""||email==""||contraseña1==""||contraseña2==""||tarjeta==""){
+				if(nombre==""||email==""||contrasenna1==""||contrasenna2==""||tarjeta==""){
 					alert("Todos los campos son obligatorios.");
 					return false;
 				}
@@ -36,7 +36,7 @@
 					alert("No se permiten espacios en blanco al inicio y fin de nombre.");
 					return false;
 				}
-				if(contraseña1 != contraseña2){
+				if(contrasenna1 != contrasenna2){
 					alert("Las contraseñas no coinciden, revisalas!.");
 					return false;
 				}
@@ -72,7 +72,7 @@
 		      			</form>
 					</div>
 					<div id="head-right">
-						<form action="/sesion">
+						<form action="/micuenta">
     						<input type="button" value="Mi cuenta" class="max-boton">
 						</form>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
@@ -99,7 +99,7 @@
 
 				<div id="contenido">
 					<div id="datos-registro">
-					<form action="/registro_usuario" name="formulario" method="post" onsubmit="return validarInicio()">
+					<form action="/registro_usuario" name="formulario" method="post" onsubmit="return validarRegistro()">
 						<b class="max-letra">Escribe tus datos personales</b>
 						<p>Email
 						<input type="text" name="email" placeholder="Email" class="input"></p>
@@ -113,7 +113,8 @@
 						<input type="text" name="tarjeta" placeholder="Tarjeta de crédito" class="input"></p>
 						<br>
 						<input type="checkbox" name="casilla1" class="check-box">  Quiero recibir novedades en mi email.<br>
-						<input type="checkbox" name="casilla2" class="check-box">  He leido y acepto la politica de privacidad.<br>
+						<input type="checkbox" name="casilla2" class="check-box">  He leido y acepto la <a href="javascript:void(0);" onclick="window.open('privacidad.html','Privacidad','scrollbars=yes,width=400,height=400')"><b><u>Poli­tica de privacidad</u></b></a>.<br>
+
 						<br>
 						<input type="submit" value="REGISTRARSE" class="normal-boton">
 					</form>

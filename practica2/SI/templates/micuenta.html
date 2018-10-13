@@ -31,8 +31,8 @@
 		      			</form>
 					</div>
 					<div id="head-right">
-						<form action="/micuenta">
-    						<input type="submit" value="Mi cuenta" class="max-boton">
+						<form action="/sesion">
+    					<input type="submit" value="Mi cuenta" class="max-boton">
 						</form>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
@@ -57,26 +57,57 @@
 				</div>
 
 				<div id="contenido">
-					{% if content %}
-					<div id="desc-peli">
-						<img src="{{url_for('static',filename=content['poster'])}}" id="caratula" alt="caratula">
-						<div id="desc">
-							<b id="titulo">{{ content['titulo'] }}</b>
-							<div id="resumen">
-								<p>{{ content['informacion'] }}</p>
-								<p><b>Director: </b>{{ content['director'] }}</p>
-								<p><b>Anno estreno: </b>{{ content['anno'] }}</p>
-							</div>
-							<p id="precio">{{ content['precio'] }} €</p>
-							<input type="number" name="quantity" min="1" max="30" step="1" value="1" id="cantidad">
-	   						<input type="submit" value="Añadir al carrito" class="normal-boton">
+					<div id="micuenta">
+						<div id="datos">
+							<div><b id="infoper">Informacion Personal</b></div>
+							<div id ="per"><p> <b>Nombre:</b> {{ content['nombre'] }}</p>
+							<p> <b>Correo:</b> {{content['email']}}</p></div>
 						</div>
+						<div id="historial">
+							<b class="max-letra">Mi Historial</b>
+							<table id="pedidos">
+	  							<tr>
+	    							<th>Titulo</th>
+									<th>Fecha de compra</th> 
+									<th>Precio EUR</th>
+	  							</tr>
+	  							<tr>
+	    							<td>Orgullo y Prejuicio</td>
+									<td>23/09/2018</td> 
+									<td>5.95</td>
+	  							</tr>
+	  							<tr>
+	    							<td>Origen</td>
+									<td>23/09/2018</td> 
+									<td>6.90</td>
+	  							</tr>
+	  							<tr>
+	    							<td>Cars</td>
+									<td>25/09/2018</td> 
+									<td>3.99</td>
+	  							</tr>
+	  							<tr>
+	    							<td>Malditos Bastardos</td>
+									<td>27/07/2018</td> 
+									<td>5.95</td>
+	  							</tr>
+							</table>
+						</div>
+						<form action="/cerrar_sesion">
+							<input type="submit" value="CERRAR SESION" class="botones" id="out">
+						</form>
 					</div>
-					{% else %}
-						<h1>Lo sentimos, no disponemos de la pelicula especificada</h1>
-					{% endif %}
 				</div>
-			</div>
+			<footer>
+					<div id="pie">
+						<p>Puedes seguirnos en </p>
+						<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
+					</div>
+			</footer>
+	</body>
+					</div>
+				</div>
+			</header>
 			<footer>
 					<div id="pie">
 						<p>Puedes seguirnos en </p>

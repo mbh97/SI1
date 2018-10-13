@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request ,redirect
+from flask import Flask, render_template, request ,redirect, session, flash, url_for
 import json
 import hashlib
 import md5
@@ -58,10 +58,18 @@ def buscar():
 		return render_template('pelicula.html', content = peli)
 	return render_template('pelicula.html', content = peli)
 
-@app.route('/sesion')
+@app.route('/micuenta')
 def micuenta():
+	if not session.get('logged_in'):
+		return render_template('sesion.html')
+	# USUARIO LOGEADO ==> HISTORIAL
 	content_dict = {}
-	return render_template('sesion.html', content = content_dict)
+	usuario = session['username']
+	datos = get_datos_usuario(usuario)
+	content_dict['nombre'] = datos['nombre']
+	content_dict['email'] = datos['email']
+	content_dict['historial'] = {}
+	return render_template('micuenta.html', content = content_dict)
 
 @app.route('/top_ventas')
 def top():
@@ -106,23 +114,24 @@ def signIn():
 	#cifrado = request.form['cifrado']
 	email = request.form['email']
 	usuario = email.split("@")[0]
-	password_codificada = request.form['cifrado']
-	if not email or not password_codificada: #esto lo podemos comprobar con javascruipt
-		return render_template('sesion.html', content = content_dict)
+	password = request.form['password']
+	password_codificada = hashlib.md5(password.encode()).hexdigest()
 
 	datos = get_datos_usuario(usuario)
-	print datos
 	if datos == None:
-		return render_template('sesion.html', content = content_dict)
+		flash("Correo no registrado") #JQUERY
+		return redirect(url_for('micuenta'))
 
 	password = datos['password']
+	print password
+	print password_codificada
 
 	if(password == password_codificada):
-		#cargar datos historial
-		return index()
-
-	else: # contrasena incorrecta!!
-		return render_template('sesion.html', content = content_dict)
+		session['logged_in'] = True
+		session['username'] = usuario
+		return redirect(url_for('index'))
+	print "contrasenna mal"
+	return redirect(url_for('micuenta')) #JQUERY
 
 
 @app.route('/registro_usuario',methods=['POST'])
@@ -139,12 +148,13 @@ def signUp():
 	if list_user != []:
 		if usuario in list_user:
 			print "ESTE EMAIL YA ESTA EN USO."
-			return render_template('registro.html', content = content_dict)
+			return flash("Este email ya esta en uso") #JQUERY
 	
 	os.mkdir(path)
 
-	f=open(path+"/datos.txt","a")
+	f=open(path+"/datos.dat","a")
 	f.write("nombre = "+ nombre +"\n")
+	contrasenna1 = hashlib.md5(contrasenna1.encode()).hexdigest()
 	f.write("password = "+ contrasenna1 +"\n")
 	f.write("email = "+ email +"\n")
 	f.write("tarjeta = "+ tarjeta +"\n")
@@ -152,9 +162,20 @@ def signUp():
 	f.write("saldo = "+ str(saldo) +"\n")
 	f.close()
 
-	#login directo
-	return index()
+	f=open(path+"/historial.json","a")
+	f.close()
+
+	session['logged_in'] = True
+	session['username'] = usuario
+	return redirect(url_for('index'))
+
+@app.route('/cerrar_sesion')
+def signOut():
+	session['logged_in'] = False
+	return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':
+	app.secret_key = os.urandom(12)
 	app.run(debug = True)

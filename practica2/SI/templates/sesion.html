@@ -8,15 +8,14 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<title>Sesion</title>
 
-		<script language="javascript">
+		<script language="javascript" src="md5.pack.js">
 			function validarInicio(){
 				var formulario = document.getElementsByName('inciarSesion')[0],
 					email = formulario.email.value,
 					password = formulario.password.value,
-					cifrado = "hola",
 					expresion_correo = /\w+@\w+\.+[a-z]/;
 
-					if email == "" || password == ""{
+					if(email == "" || password == ""){
 						alert("Todos los campos son obligatorios.");
 						return false;
 					}
@@ -25,8 +24,6 @@
 						alert("El email introducido tiene un formato erroneo.");
 						return false;
 					}
-					
-					cifrado = hashlib.md5(password.encode()).hexdigest()
 					return true;
 			}
 		</script>
@@ -53,7 +50,7 @@
 		      			</form>
 					</div>
 					<div id="head-right">
-    					<form action="/sesion">
+    					<form action="/micuenta">
     						<input type="submit" value="Mi cuenta" class="max-boton">
 						</form>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
@@ -87,7 +84,6 @@
 								<input type="text" name="email" placeholder="Email" class="input">
 								<p>Contraseña</p>
 								<input type="password" name="password" class="input" placeholder="Contraseña">
-								<input type="Hidden" name="cifrado" value="hola">
 								<br><br><br>
 								<input type="submit" value="INICIAR SESION" class="normal-boton">
 							</form>
