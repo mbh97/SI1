@@ -3,6 +3,7 @@ import json
 import hashlib
 import md5
 import os
+from random import randint
 
 app = Flask(__name__)
 catalogo = json.loads(open('catalogo.json').read(), strict=False)
@@ -132,11 +133,27 @@ def signUp():
 	contrasenna1 = request.form['contrasenna1']
 	tarjeta = request.form['tarjeta']
 	usuario = usuario = email.split("@")[0]
+	path = str(os.getcwd())+"/usuarios/"+str(usuario)
 
-	#if(os.path.exists("/usuarios/"+str(usuario))) #esto no funciona
+	list_user = os.listdir(str(os.getcwd())+"/usuarios")
+	if list_user != []:
+		if usuario in list_user:
+			print "ESTE EMAIL YA ESTA EN USO."
+			return render_template('registro.html', content = content_dict)
+	
+	os.mkdir(path)
 
-	#os.mkdir(str(os.getcwd())+"/usuarios/"+str(usuario)) esto tampoco
+	f=open(path+"/datos.txt","a")
+	f.write("nombre = "+ nombre +"\n")
+	f.write("password = "+ contrasenna1 +"\n")
+	f.write("email = "+ email +"\n")
+	f.write("tarjeta = "+ tarjeta +"\n")
+	saldo = randint(0,100)
+	f.write("saldo = "+ str(saldo) +"\n")
+	f.close()
 
+	#login directo
+	return index()
 
 
 if __name__ == '__main__':

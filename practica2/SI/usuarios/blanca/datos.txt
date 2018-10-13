@@ -1,0 +1,5 @@
+nombre = blanca
+password = pepito
+email = blanca@gmail.com
+tarjeta = 123456789
+saldo = 6

@@ -53,7 +53,9 @@
 		      			</form>
 					</div>
 					<div id="head-right">
-    					<input type="submit" value="Mi cuenta" class="max-boton">
+    					<form action="/sesion">
+    						<input type="submit" value="Mi cuenta" class="max-boton">
+						</form>
 						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
 					</div>
 				</div>
@@ -95,7 +97,7 @@
 							<b class="max-letra">Quiero ser usuario</b>
 							<p>Si todavia no tienes una cuenta de usuario utiliza esta opción para acceder al formulario de registro.</p>
 							<br>
-							<form action="/registro" name="registrar" method="post" onsubmit="return validarRegistro()">
+							<form action="/registro">
 								<input type="submit" value="CREAR CUENTA" class="normal-boton">
 							</form>
 						</div>
