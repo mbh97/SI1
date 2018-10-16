@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request ,redirect, session, flash, url_for
+from flask import Flask, render_template, request ,redirect, session, flash, url_for, jsonify
 import json
 import hashlib
 import md5
@@ -107,7 +107,7 @@ def get_datos_usuario(usuario):
 			datos["saldo"] = linea[2]
 	return datos
 
-@app.route('/inicio_sesion',methods=['POST'])
+@app.route('/iniciosesion',methods=['POST'])
 def signIn():
 	content_dict = {}
 
@@ -149,7 +149,7 @@ def signUp():
 		if usuario in list_user:
 			print "ESTE EMAIL YA ESTA EN USO."
 			return flash("Este email ya esta en uso") #JQUERY
-	
+
 	os.mkdir(path)
 
 	f=open(path+"/datos.dat","a")

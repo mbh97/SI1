@@ -7,7 +7,31 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<title>Sesion</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+			$(function comprueba() {
+				$('#INICIAR_SESION').click(validarInicio() {
+					event.preventDefault();
+					$.ajax({
+						url: '/iniciosesion',
+						cache: false,
+						data: $('#inciarSesion').serialize(),
+						type: 'POST',
+						success: function(response) {
+							if(response.result == "WRONG"){
+								$("#wrong_pss_ms").text(response.result);
+							}else{
+								location.href = "/";
+						}
+					}
+						error: function(error) {
+							console.log(error);
+					}
+				});
+			});
+			return false;
+		});
 
+		</script>
 		<script language="javascript" src="md5.pack.js">
 			function validarInicio(){
 				var formulario = document.getElementsByName('inciarSesion')[0],
@@ -78,7 +102,7 @@
 				<div id="contenido">
 					<div id="inicio-sesion">
 						<div id="registrado">
-							<form action="/inicio_sesion" name="inciarSesion" method="post" onsubmit="return validarInicio()">
+							<form action="iniciosesion" name="inciarSesion" method="post" onsubmit="return validarInicio()">
 								<b class="max-letra">Ya soy usuario</b>
 								<p>Correo electronico</p>
 								<input type="text" name="email" placeholder="Email" class="input">
