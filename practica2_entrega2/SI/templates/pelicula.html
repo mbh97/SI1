@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css"  href="../static/css/style.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<title>Inicio</title>
+	</head>
+
+	<body>
+			<header>
+				<div id="cabecera">
+					<a href="/"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
+					<div id="head-center">
+						<form action="/search" name="buscador" method="post">
+							<select id=filtro name="FiltrarPorGenero">
+								<option selected disabled hidden>Genero</option>
+		  						<option value="Accion">Accion</option>
+		  						<option value="Animacion">Animacion</option>
+		  						<option value="Ficcion">Ficcion</option>
+		  						<option value="Comedia">Comedia</option>
+		  						<option value="Drama">Drama</option>
+		  						<option value="Misterio">Misterio</option>
+		  						<option value="Musical">Musical</option>
+		  						<option value="Romantica">Romantica</option>
+							</select>
+		      				<input id="text-buscar" type="text" placeholder="Buscar..." name="titulo">
+		      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
+		      			</form>
+					</div>
+					<div id="head-right">
+						<form action="/micuenta">
+    						<input type="submit" value="Mi cuenta" class="max-boton">
+						</form>
+						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
+					</div>
+				</div>
+			</header>
+			<div id="cont">
+				<div id="menu">
+					<h1 id="categorias"><b>Categorias</b></h1>
+					<ul>
+						<li><a href="/categorias/Accion">Accion</a></li>
+						<li><a href="/categorias/Animacion">Animacion</a></li>
+						<li><a href="/categorias/Ficcion">Ficcion</a></li>
+						<li><a href="/categorias/Comedia">Comedia</a></li>
+						<li><a href="/categorias/Drama">Drama</a></li>
+						<li><a href="/categorias/Misterio">Misterio</a></li>
+						<li><a href="/categorias/Musical">Musical</a></li>
+						<li><a href="/categorias/Romantica">Romantica</a></li>
+					</ul>
+					<form action="/top_ventas">
+						<input type="submit" value="TOP VENTAS" class="normal-boton">
+					</form>
+				</div>
+
+				<div id="contenido">
+					{% if content %}
+					<div id="desc-peli">
+						<img src="{{url_for('static',filename=content['poster'])}}" id="caratula" alt="caratula">
+						<div id="desc">
+							<b id="titulo">{{ content['titulo'] }}</b>
+							<div id="resumen">
+								<p>{{ content['informacion'] }}</p>
+								<p><b>Director: </b>{{ content['director'] }}</p>
+								<p><b>Anno estreno: </b>{{ content['anno'] }}</p>
+							</div>
+							<p id="precio">{{ content['precio'] }} €</p>
+							<input type="number" name="quantity" min="1" max="30" step="1" value="1" id="cantidad">
+	   						<input type="submit" value="Añadir al carrito" class="normal-boton">
+						</div>
+					</div>
+					{% else %}
+						<h1>Lo sentimos, no disponemos de la pelicula especificada</h1>
+					{% endif %}
+				</div>
+			</div>
+			<footer>
+					<div id="pie">
+						<p>Puedes seguirnos en </p>
+						<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
+					</div>
+			</footer>
+	</body>
+</html>
