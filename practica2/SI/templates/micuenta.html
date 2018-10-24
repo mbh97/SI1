@@ -32,9 +32,9 @@
 					</div>
 					<div id="head-right">
 						<form action="/sesion">
-    					<input type="submit" value="Mi cuenta" class="max-boton">
+    						<input type="submit" value="Mi cuenta" class="max-boton">
 						</form>
-						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
+						<a href="/carrito"><img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/></a>
 					</div>
 				</div>
 			</header>
@@ -60,54 +60,37 @@
 					<div id="micuenta">
 						<div id="datos">
 							<div><b id="infoper">Informacion Personal</b></div>
-							<div id ="per"><p> <b>Nombre:</b> {{ content['nombre'] }}</p>
-							<p> <b>Correo:</b> {{content['email']}}</p></div>
+							<div id ="per"><p> <b>Nombre:</b> {{ usuario['nombre'] }}</p>
+							<p> <b>Correo:</b> {{usuario['email']}}</p></div>
 						</div>
+						<b class="max-letra">Mi Historial</b>
+						{% if historial %}
 						<div id="historial">
-							<b class="max-letra">Mi Historial</b>
-							<table id="pedidos">
+							<table class="pedidos">
 	  							<tr>
 	    							<th>Titulo</th>
+	    							<th>Cantidad</th>
 									<th>Fecha de compra</th> 
 									<th>Precio EUR</th>
 	  							</tr>
+	  							{% for compra in historial %}
 	  							<tr>
-	    							<td>Orgullo y Prejuicio</td>
-									<td>23/09/2018</td> 
-									<td>5.95</td>
+	    							<td>{{ compra['titulo'] }}</td>
+	    							<td>{{ compra['cantidad']}}</td> 
+									<td>{{ compra['fecha']}}</td> 
+									<td>{{ compra['precio']}}</td> 
 	  							</tr>
-	  							<tr>
-	    							<td>Origen</td>
-									<td>23/09/2018</td> 
-									<td>6.90</td>
-	  							</tr>
-	  							<tr>
-	    							<td>Cars</td>
-									<td>25/09/2018</td> 
-									<td>3.99</td>
-	  							</tr>
-	  							<tr>
-	    							<td>Malditos Bastardos</td>
-									<td>27/07/2018</td> 
-									<td>5.95</td>
-	  							</tr>
+	  							{% endfor %}
 							</table>
 						</div>
+						{% else %}
+							<p>Aun no has realizado ninguna compra.</p>
+						{%endif%}
 						<form action="/cerrar_sesion">
 							<input type="submit" value="CERRAR SESION" class="botones" id="out">
 						</form>
 					</div>
 				</div>
-			<footer>
-					<div id="pie">
-						<p>Puedes seguirnos en </p>
-						<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
-					</div>
-			</footer>
-	</body>
-					</div>
-				</div>
-			</header>
 			<footer>
 					<div id="pie">
 						<p>Puedes seguirnos en </p>

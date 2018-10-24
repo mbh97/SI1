@@ -1,6 +1,7 @@
 {
 	"peliculas": [
 	 	{
+	 		"id":"1",
 			"titulo": "Mision imposible: Fallout",
 			"poster": "imgs/misionimposible.jpg",
 			"informacion": "Un traficante de armas y un grupo de terroristas pretenden realizar un triple ataque nuclear con tres artefactos de plutonio, los cuales se pierden. Ethan Hunt y su equipo tendran que recuperarlos antes de que caigan en las manos equivocadas.",
@@ -25,6 +26,7 @@
 			]
 		},
 		{
+			"id":"2",
 			"titulo": "Predator",
 			"poster": "imgs/predator.jpg",
 			"informacion": "El Depredador ​​​es una pelicula estadounidense de 2018 perteneciente al genero de Ficcion y de accion dirigida por Shane Black y escrita por Black y Fred Dekker. Es la cuarta entrega de la serie de peliculas Depredador, y tiene lugar entre los acontecimientos de Depredador 2 y Depredadores.",
@@ -45,6 +47,7 @@
 			]
 		},
 		{
+			"id":"3",
 			"titulo": "Deadpool",
 			"poster": "imgs/deadpool.jpg",
 			"informacion": "Un ex mercenario quien, tras haber sido sometido a un cruel experimento adquiere el super poder de sanar rapidamente, pretende vengarse del hombre que destrozo su vida.",
@@ -65,6 +68,7 @@
 			]
 		},
 		{
+			"id":"4",
 			"titulo": "Malditos bastardos",
 			"poster": "imgs/malditosbastardos.jpg",
 			"informacion": "Es el primer anno de la ocupacion alemana de Francia. El oficial aliado, teniente Aldo Raine (Brad Pitt) ensambla un equipo de soldados judios para cometer actos violentos en contra de los nazis, incluyendo la toma de cabelleras. el y sus hombres unen fuerzas con Bridget von Hammersmark, una actriz alemana y un agente encubierto, para derrocar a los lideres del Tercer Reich. Sus destinos convergen con la duenna de teatro Shosanna Dreyfus, quien busca vengar la ejecucion de su familia.",
@@ -89,6 +93,7 @@
 			]
 		},
 		{
+			"id":"5",
 			"titulo": "Los increibles 2",
 			"poster": "imgs/losincreibles2.jpg",
 			"informacion": "Helen entra en accion y debe luchar contra un cibercriminal que planea hipnotizar el mundo a traves de las pantallas de las computadoras. Eso deja al Sr. Increible con uno de sus mayores desafios: quedarse en casa y cuidar de tres ninnos traviesos.",
@@ -113,6 +118,7 @@
 			]
 		},
 		{
+			"id":"6",
 			"titulo": "Coco",
 			"poster": "imgs/coco.jpg",
 			"informacion": "Miguel es un ninno que suenna con ser musico, pero su familia se lo prohibe porque su tatarabuelo, musico, los abandono, y quieren obligar a Miguel a ser zapatero, como todos los miembros de la familia. Por accidente, Miguel entra en la Tierra de los Muertos, de donde solo podra salir si un familiar difunto le concede su bendicion, pero su tatarabuela se niega a dejarlo volver con los vivos si no promete que no sera musico. Debido a eso, Miguel escapa de ella y empieza a buscar a su tatarabuelo.
@@ -134,6 +140,7 @@
 			]
 		},
 		{
+			"id":"6",
 			"titulo": "Your name",
 			"poster": "imgs/yourname.jpg",
 			"informacion": "Taki vive en Tokio y Mitsuha en un pequenno pueblo. Mientras duermen, intercambian cuerpos y comienzan a comunicarse entre ellos.",
@@ -154,6 +161,7 @@
 			]
 		},
 		{
+			"id":"7",
 			"titulo": "Origen",
 			"poster": "imgs/origen.jpg",
 			"informacion": "Dom Cobb (Leonardo DiCaprio) es un ladron con una extranna habilidad para entrar a los suennos de la gente y robarle los secretos de sus subconscientes. Su habilidad lo ha convertido en un atractivo en el mundo del espionaje corporativo, pero ha tenido un gran costo en la gente que ama. Cobb tiene la oportunidad de ser perdonado cuando recibe una tarea imposible: plantar una idea en la mente de una persona. Si tiene exito, sera el crimen perfecto, pero un enemigo se anticipa a sus movimientos.",
@@ -174,6 +182,7 @@
 			]
 		},
 		{
+			"id":"8",
 			"titulo": "Star Wars: Episodio V",
 			"poster": "imgs/starwars.jpg",
 			"informacion": "En esta secuela de la pelicula de 1977 'La Guerra de las Galaxias', Han Solo corteja a la princesa Leia, Darth Vader regresa y Yoda ensenna a Luke Skywalker.",
@@ -194,6 +203,7 @@
 			]
 		},
 		{
+			"id":"9",
 			"titulo": "Campeones",
 			"poster": "imgs/campeones.jpg",
 			"informacion": "Marco Montes es el segundo entrenador de un equipo de baloncesto de la ACB. Marco no esta atravesando un buen momento debido a que se ha convertido en alguien arrogante y de malos modales. Atraviesa numerosos problemas profesionales y personales y tras su despido como entrenador de su equipo, Marco en estado de ebriedad sufre un accidente de trafico que conlleva una grave multa.",
@@ -214,6 +224,7 @@
 			]
 		},
 		{
+			"id":"10",
 			"titulo": "Intocable",
 			"poster": "imgs/intocable.jpg",
 			"informacion": "Una extranna amistad se desarrolla entre un millonario que quedo paralizado en un accidente y un joven de los suburbios.",
@@ -234,6 +245,7 @@
 			]
 		},
 		{
+			"id":"11",
 			"titulo": "El lado bueno de las cosas",
 			"poster": "imgs/elladobuenodelascosas.jpg",
 			"informacion": "Despues de perder su casa, trabajo y esposa y pasar ocho meses en prision, Pat Solatano termina con sus padres. el esta decidido a reconstruir su vida y reunirse con su esposa, pero sus padres estaran felices si el comparte su obsesion por las aguilas de Filadelfia. Las cosas se complican cuando Pat conoce a Tiffany, quien le ofrece ayuda para reencontrarse con su esposa si a cambio hace algo muy importante.",
@@ -254,6 +266,7 @@
 			]
 		},
 		{
+			"id":"12",
 			"titulo": "La forma del agua",
 			"poster": "imgs/laformadelagua.jpg",
 			"informacion": "Elisa es una joven muda que se enamora de un hombre anfibio que esta recluido en un acuario en un laboratorio secreto, propiedad del Gobierno, en el que ella trabaja limpiando. Llevada por el amor, Elisa trama un plan para liberar al mutante.",
@@ -274,6 +287,7 @@
 			]
 		},
 		{
+			"id":"13",
 			"titulo": "Lo imposible",
 			"poster": "imgs/loimposible.jpg",
 			"informacion": "En diciembre de 2004, la muy unida familia integrada por Maria, Henry y sus tres hijos inician sus vacaciones invernales en Tailandia. Pero el dia despues de Navidad, la idilica festividad se transforma en una pesadilla incomprensible cuando rugido terrible surge de las profundidades del mar, seguido por una gran pared de agua que devora a todo en su camino. Maria y su familia enfrentan los peores momentos de sus vidas.",
@@ -294,6 +308,7 @@
 			]
 		},
 		{
+			"id":"14",
 			"titulo": "La vida es bella",
 			"poster": "imgs/lavidaesbella.jpg",
 			"informacion": "Un hombre construye una elaborada fantasia para proteger a su hijo de la vida en un campo de concentracion nazi.",
@@ -314,6 +329,7 @@
 			]
 		},
 		{
+			"id":"15",
 			"titulo": "La monja",
 			"poster": "imgs/lamonja.jpg",
 			"informacion": "Una monja se suicida en una abadia rumana y El Vaticano envia a un sacerdote y una novicia a investigar lo sucedido. Lo que ambos encuentran alla es un secreto perverso que les enfrentara cara a cara con el mal en su esencia mas pura.",
@@ -334,6 +350,7 @@
 			]
 		},
 		{
+			"id":"16",
 			"titulo": "Expediente Warren: El Caso Enfield",
 			"poster": "imgs/expedientewarren.jpg",
 			"informacion": "Ed y Lorraine Warren, renombrados demonologos e investigadores de lo paranormal, se enfrentan de nuevo a las fuerzas infernales. En esta ocasion, viajan hasta el norte de Londres para tratar de ayudar a una madre y sus cuatro hijos, quienes habitan en una casa plagada de espiritus malignos.",
@@ -354,6 +371,7 @@
 			]
 		},
 		{
+			"id":"17",
 			"titulo": "La huerfana",
 			"poster": "imgs/lahuerfana.jpg",
 			"informacion": "Devastados por la perdida de su bebe nonato, Kate y John deciden adoptar una ninna. En el orfanato, ambos se enamoran de una pequenna llamada Esther (Isabelle Fuhrman), y muy pronto la pareja lleva a su nueva hija a casa. Pero cuando se desarrollan una serie de eventos misteriosos, Kate empieza a sospechar que algo endemoniado se oculta detras del rostro angelical de la ninna.
@@ -375,6 +393,7 @@
 			]
 		},
 		{
+			"id":"18",
 			"titulo": "La La Land",
 			"poster": "imgs/lalaland.jpg",
 			"informacion": "Sebastian, un pianista de jazz, y Mia, una aspirante a actriz, se enamoran locamente; pero la ambicion desmedida que tienen por triunfar en sus respectivas carreras, en una ciudad como Los angeles, repleta de competencia y carente de piedad, pone en peligro su amor.",
@@ -395,6 +414,7 @@
 			]
 		},
 		{
+			"id":"19",
 			"titulo": "Mamma Mia! Una y otra vez",
 			"poster": "imgs/mamamia2.jpg",
 			"informacion": "Donna se enamora de Sam mientras vive una serie de aventuras por Europa en 1979. En el presente, la hija de Donna, embarazada, se reune con los viejos amigos y amantes de su madre en la isla griega de Kalokairi.",
@@ -415,6 +435,7 @@
 			]
 		},
 		{
+			"id":"20",
 			"titulo": "El gran showman",
 			"poster": "imgs/showman.jpg",
 			"informacion": "Basada en la historia real de fundador del circo Ringling Brothers and Barnum & Bailey Circus, la pelicula fue escrita por Michael Arndt, Jenny Bicks y Bill Condon.",
@@ -435,6 +456,7 @@
 			]
 		},
 		{
+			"id":"21",
 			"titulo": "La bella y la bestia",
 			"poster": "imgs/bellaybestia.jpg",
 			"informacion": "Belle, una joven hermosa y brillante, asume el lugar de su padre como prisionero en el castillo de una bestia. Poco a poco, la valiente Belle ira dandose cuenta de que el principe bestia no es el malvado ser que todos creen que es y tiene, en realidad, un gran corazon.",
@@ -455,6 +477,7 @@
 			]
 		},
 		{
+			"id":"22",
 			"titulo": "Antes de ti",
 			"poster": "imgs/antesdeti.jpg",
 			"informacion": "La vida de Louisa Clark, una chica alegre y alocada, que va empalmando un trabajo con otro para ayudar a su familia a subsistir, cambia por completo cuando comienza a trabajar como cuidadora de un joven millonario, quien quedo paralitico tras un accidente. Poco a poco, se va estableciendo entre ellos una conexion cada vez mas intima.
@@ -476,6 +499,7 @@
 			]
 		},
 		{
+			"id":"23",
 			"titulo": "Orgullo y prejuicio",
 			"poster": "imgs/orgulloyprejuicio.jpg",
 			"informacion": "Un peligroso flirteo comienza entre una joven y bella mujer y el apuesto amigo de un adinerado soltero.",
@@ -496,6 +520,7 @@
 			]
 		},
 		{
+			"id":"24",
 			"titulo": "Amelie",
 			"poster": "imgs/amelie.jpg",
 			"informacion": "El hallazgo de un tesoro olvidado pone a una camarera parisina a cuestionar, y alterar la vida de quienes la rodean.",
@@ -516,6 +541,7 @@
 			]
 		},
 		{
+			"id":"25",
 			"titulo": "La proposicion",
 			"poster": "imgs/laproposicion.jpg",
 			"informacion": "Una poderosa editora de libros corre el peligro de ser deportada a su natal Canada y dice que esta comprometida con Andrew (Ryan Reynolds), su asistente y un hombre casado. Andrew acepta ayudarla, pero impone algunas condiciones, entre ellas volar a Alaska para conocer a su excentrica familia. Con un oficial de migracion que los vigila constantemente, Margaret y Andrew deben seguir con los planes de boda a pesar de los numerosos contratiempos.",

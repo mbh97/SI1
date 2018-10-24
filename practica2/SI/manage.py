@@ -4,6 +4,7 @@ import hashlib
 import md5
 import os
 from random import randint
+import time
 
 app = Flask(__name__)
 catalogo = json.loads(open('catalogo.json').read(), strict=False)
@@ -11,6 +12,10 @@ catalogo = json.loads(open('catalogo.json').read(), strict=False)
 @app.route('/')
 def index():
 	content_dict = {}
+	if session.get("carrito") == None: 
+		session['carrito'] = []
+	if session.get("precio") == None: 
+		session['precio'] = 0
 
 	content_dict['peliculas'] = [pelicula for pelicula in catalogo['peliculas'] if pelicula['anno'] == 2018]
 	content_dict['categoriaActual'] = 'Ultimas novedades'
@@ -45,6 +50,7 @@ def buscar():
 	if 'FiltrarPorGenero' not in request.form:
 		if titulo == "":
 			return index()
+
 		peli = encontrar_peli(catalogo['peliculas'],  titulo)
 		return render_template('pelicula.html', content=peli)
 	genero = request.form['FiltrarPorGenero']
@@ -64,13 +70,17 @@ def micuenta():
 		email = getCookie()
 		return render_template('sesion.html', content = email)
 	# USUARIO LOGEADO ==> HISTORIAL
-	content_dict = {}
 	usuario = session['username']
 	datos = get_datos_usuario(usuario)
-	content_dict['nombre'] = datos['nombre']
-	content_dict['email'] = datos['email']
-	content_dict['historial'] = {}
-	return render_template('micuenta.html', content = content_dict)
+
+	usuario_dict = {}
+	usuario_dict['nombre'] = datos['nombre']
+	usuario_dict['email'] = datos['email']
+	usuario_dict['historial'] = {}
+
+	path = str(os.getcwd())+"/usuarios/"+str(usuario)
+	historial_dict = json.loads(open(path + '/historial.json').read(), strict=False)
+	return render_template('micuenta.html', usuario = usuario_dict, historial = historial_dict['historial'])
 
 @app.route('/top_ventas')
 def top():
@@ -106,7 +116,7 @@ def get_datos_usuario(usuario):
 		if linea[0] == "tarjeta":
 			datos["tarjeta"] = linea[2]
 		if linea[0] == "saldo":
-			datos["saldo"] = linea[2]
+			datos["saldo"] = eval(linea[2])
 	return datos
 
 @app.route('/inicio_sesion',methods=['POST'])
@@ -159,8 +169,11 @@ def signUp():
 	f.write("saldo = "+ str(saldo) +"\n")
 	f.close()
 
-	f=open(path+"/historial.json","a")
-	f.close()
+	datos = {
+	    "historial": []
+	}
+	with open(path+"/historial.json", 'w') as file:
+		json.dump(datos, file)
 
 	session['logged_in'] = True
 	session['username'] = usuario
@@ -181,6 +194,96 @@ def getCookie():
 	email = request.cookies.get('userID')
 	return email
 
+@app.route('/carrito')
+def carrito():
+	return render_template('carrito.html', carrito = session['carrito'], precio = session['precio'])
+
+def buscar_peli_id(id):
+	for pelicula in catalogo['peliculas']:
+		if pelicula['id'] == id:
+			return pelicula
+
+def calcular_precio():
+	precio = 0
+	for dic in session['carrito']:
+		precio += dic['n']*dic['peli']['precio']
+
+	return precio
+
+@app.route('/add_carrito/<id>/<n>',methods=['GET','POST'])
+def add_carrito(id, n):
+	peli = buscar_peli_id(id)
+
+	#si la peli esta ya en el carrito, aumentamos el numero de pelis
+	for dic in session['carrito']:
+		if dic['peli'] == peli:
+			dic['n'] += eval(n)
+			session['precio'] = calcular_precio()
+			return jsonify()
+
+	# peli no incluida en carrito
+	dic = {}
+	dic['peli'] = peli
+	dic['n'] = eval(n)
+	session['carrito'].append(dic)
+	session['precio'] = calcular_precio()
+	return jsonify()
+
+@app.route('/comprar',methods=['GET','POST'])
+def comprar():
+	if session['precio'] == 0:
+		return jsonify(result="NOT_CARRITO")
+
+	if not session.get('logged_in'):
+		return jsonify(result="NOT_SESSION")
+
+	#comprobar que tenga dinero suficiente en su cuenta
+	usuario = session['username']
+	usuario_info = get_datos_usuario(usuario)
+	if session['precio'] > usuario_info['saldo']:
+		return jsonify(result="NOT_MONEY")
+
+	path = str(os.getcwd())+"/usuarios/"+str(usuario)
+
+	#restar dinero usuario
+	os.remove(path+"/datos.dat")
+
+	f=open(path+"/datos.dat","a")
+	f.write("nombre = "+ usuario_info['nombre'] +"\n")
+	f.write("password = "+ usuario_info['password'] +"\n")
+	f.write("email = "+ usuario_info['email'] +"\n")
+	f.write("tarjeta = "+ usuario_info['tarjeta'] +"\n")
+	new_saldo = usuario_info['saldo'] - session['precio']
+	f.write("saldo = "+ str(new_saldo) +"\n")
+	f.close()
+
+	#aumentar ventas de las peliculas (para el futuro)
+
+	#escribir historial
+	historial = json.loads(open(path+"/historial.json").read(), strict=False)
+
+	for dic in session['carrito']:
+		datos = {}
+		datos['fecha'] = time.strftime("%d/%m/%y")
+		datos['titulo'] = dic['peli']['titulo']
+		datos['cantidad'] = dic['n']
+		datos['precio'] = dic['peli']['precio']*dic['n']
+		historial['historial'].append(datos)
+
+	with open(path+"/historial.json", 'w') as file:
+		json.dump(historial, file)
+
+	return jsonify(result="OK")
+
+@app.route('/borrar/<id>', methods=['GET','POST'])
+def borrar(id):
+	i = 0
+	for dic in session['carrito']:
+		if dic['peli']['id'] == id:
+			session['precio'] -= dic['peli']['precio']*dic['n']
+			session['carrito'].pop(i)
+			return jsonify(result="OK", precio = session['precio'])
+		i += 1
 
 if __name__ == '__main__':
 	app.secret_key = os.urandom(12)

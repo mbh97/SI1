@@ -244,23 +244,23 @@ li {
 	margin-top: 30px;
 }
 
-#pedidos{
+.pedidos{
 	border-collapse: collapse;
 	margin-top: 15px;
 	width: 70%;
 }
 
-#pedidos td, #pedidos th {
+.pedidos td, .pedidos th {
     border: 1px solid black;
     text-align: left;
     padding: 8px;
 }
 
-#pedidos th {
+.pedidos th {
 	background-color: #d9eeff;
 }
 
-#pedidos tr:nth-child(even) {
+.pedidos tr:nth-child(even) {
     background-color: #f2f9ff;
 }
 
@@ -303,6 +303,31 @@ li {
 #error_registro{
 	color:red;
 }
+
+/* CARRITO */
+#cont-carrito{
+	margin-left: 100px;
+	margin-top: 30px;
+}
+
+.tabla-carrito{
+	margin-top: 30px;
+}
+
+#total{
+	display: flex;
+	width: 100%;
+	margin-top: 20px;
+	font-size: 18px;
+}
+#precio{
+	margin-left: 10px;
+	font-size: 18px;
+}
+#comprar{
+	margin-top: 20px;
+}
+
 /***************** GENERAL *********************/
 
 .botones{

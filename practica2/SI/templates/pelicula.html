@@ -7,6 +7,22 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<title>Inicio</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script language="javascript">
+			function add_carrito(id){
+				var cantidad = document.getElementById("cantidad").value;
+				event.preventDefault();
+				$.ajax({
+					url: "/add_carrito/".concat(id,"/",cantidad),
+					cache: false,
+					type: 'POST',
+					success: function(response) {
+						alert("Has añadido esta pelicula a tu carrito :)");
+					}
+				});
+			}
+		</script>
 	</head>
 
 	<body>
@@ -34,7 +50,7 @@
 						<form action="/micuenta">
     						<input type="submit" value="Mi cuenta" class="max-boton">
 						</form>
-						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
+						<a href="/carrito"><img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/></a>
 					</div>
 				</div>
 			</header>
@@ -69,7 +85,7 @@
 							</div>
 							<p id="precio">{{ content['precio'] }} €</p>
 							<input type="number" name="quantity" min="1" max="30" step="1" value="1" id="cantidad">
-	   						<input type="submit" value="Añadir al carrito" class="normal-boton">
+	   						<input type="submit" value="Añadir al carrito" class="normal-boton" onclick="add_carrito({{content['id']}})">
 						</div>
 					</div>
 					{% else %}
