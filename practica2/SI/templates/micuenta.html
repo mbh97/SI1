@@ -7,6 +7,33 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<title>Inicio</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script language="javascript">
+			function actualizar_banner(){ 
+				   	$.ajax({
+				   		url: "/actualizar_banner",
+						cache: false,
+						type: 'POST',
+						success: function(response) {
+							$("#banner").text("Usuarios conectados: " + response.conectados);
+							$("#banner").css('font-weight', 'bold');
+						}
+				   	});
+				   	setTimeout("actualizar_banner()",3000) 
+			}
+
+			function my_toggle(tableid){
+			  var id = jQuery(tableid).data('id')
+			  jQuery('.'.concat(id)).toggle();
+			}
+
+			jQuery(document).ready(function(){
+				jQuery('.opciones').on('click', function(){
+					my_toggle(this)
+				})
+			});
+		</script>
+
 	</head>
 
 	<body>
@@ -54,6 +81,8 @@
 					<form action="/top_ventas">
 						<input type="submit" value="TOP VENTAS" class="normal-boton">
 					</form>
+					<br>
+					<div id="banner"></div>
 				</div>
 
 				<div id="contenido">
@@ -68,18 +97,35 @@
 						<div id="historial">
 							<table class="pedidos">
 	  							<tr>
-	    							<th>Titulo</th>
-	    							<th>Cantidad</th>
+									<th>Id</th>
 									<th>Fecha de compra</th> 
 									<th>Precio EUR</th>
 	  							</tr>
 	  							{% for compra in historial %}
-	  							<tr>
-	    							<td>{{ compra['titulo'] }}</td>
-	    							<td>{{ compra['cantidad']}}</td> 
-									<td>{{ compra['fecha']}}</td> 
-									<td>{{ compra['precio']}}</td> 
-	  							</tr>
+		  							<tr id="compra{{compra['id']}}" data-id="{{compra['id']}}" class="opciones">
+		    							<td>{{ compra['id'] }}</td>
+		    							<td>{{ compra['fecha']}}</td> 
+										<td>{{ compra['precio']}}</td> 
+		  							</tr>
+									<tr class="{{compra['id']}}" hidden>
+								        <td>
+								            <table class="pedidos_extra">
+								                <tr>
+								                    <th>Titulo</th>
+													<th>Cantidad</th> 
+													<th>Precio EUR</th>
+								                </tr>
+								                {% for peli in compra['pelis'] %}
+								                <tr>
+								                	<td>{{ peli[0]['titulo'] }}</td>
+					    							<td>{{ peli[1] }}</td> 
+													<td>{{ peli[0]['precio']}}</td>
+												</tr>
+								                {% endfor %}
+								            </table>
+								        </td>
+								    </tr>
+
 	  							{% endfor %}
 							</table>
 						</div>

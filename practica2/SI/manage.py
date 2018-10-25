@@ -177,7 +177,7 @@ def signUp():
 
 	session['logged_in'] = True
 	session['username'] = usuario
-	return jsonify(result="OK")
+	return jsonify(result=email)
 
 @app.route('/cerrar_sesion')
 def signOut():
@@ -246,9 +246,7 @@ def comprar():
 	path = str(os.getcwd())+"/usuarios/"+str(usuario)
 
 	#restar dinero usuario
-	os.remove(path+"/datos.dat")
-
-	f=open(path+"/datos.dat","a")
+	f=open(path+"/datos.dat","w")
 	f.write("nombre = "+ usuario_info['nombre'] +"\n")
 	f.write("password = "+ usuario_info['password'] +"\n")
 	f.write("email = "+ usuario_info['email'] +"\n")
@@ -258,20 +256,35 @@ def comprar():
 	f.close()
 
 	#aumentar ventas de las peliculas (para el futuro)
+	for dic in session['carrito']:
+		for peli in catalogo['peliculas']:
+			if peli == dic['peli']:
+				peli['ventas'] += dic['n']
+
+	with open("catalogo.json", 'w') as file:
+		json.dump(catalogo, file)
 
 	#escribir historial
 	historial = json.loads(open(path+"/historial.json").read(), strict=False)
+	lastid = 0
+	if historial['historial'] != []:
+		lastid = historial['historial'][-1]['id']
 
+	datos = {}
+	datos['id'] = lastid +1
+	datos['fecha'] = time.strftime("%d/%m/%y")
+	datos['precio'] = session['precio']
+	datos['pelis'] = []
 	for dic in session['carrito']:
-		datos = {}
-		datos['fecha'] = time.strftime("%d/%m/%y")
-		datos['titulo'] = dic['peli']['titulo']
-		datos['cantidad'] = dic['n']
-		datos['precio'] = dic['peli']['precio']*dic['n']
-		historial['historial'].append(datos)
+		datos['pelis'].append([dic['peli'], dic['n']])
+
+	historial['historial'].append(datos)
 
 	with open(path+"/historial.json", 'w') as file:
 		json.dump(historial, file)
+
+	session['carrito'] = []
+	session['precio'] = 0
 
 	return jsonify(result="OK")
 
@@ -284,6 +297,15 @@ def borrar(id):
 			session['carrito'].pop(i)
 			return jsonify(result="OK", precio = session['precio'])
 		i += 1
+
+@app.route('/actualizar_banner', methods=['GET','POST'])
+def actualizar_banner():
+	conectados = randint(15,100)
+	return jsonify(result="OK", conectados = conectados)
+
+@app.route('/privacidad')
+def privacidad():
+	return render_template('privacidad.html')
 
 if __name__ == '__main__':
 	app.secret_key = os.urandom(12)

@@ -22,10 +22,23 @@
 					}
 				});
 			}
+
+			function actualizar_banner(){ 
+			   	$.ajax({
+			   		url: "/actualizar_banner",
+					cache: false,
+					type: 'POST',
+					success: function(response) {
+						$("#banner").text("Usuarios conectados: " + response.conectados);
+						$("#banner").css('font-weight', 'bold');
+					}
+			   	});
+			   	setTimeout("actualizar_banner()",3000) 
+			}
 		</script>
 	</head>
 
-	<body>
+	<body onload="actualizar_banner()">
 			<header>
 				<div id="cabecera">
 					<a href="/"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
@@ -70,6 +83,8 @@
 					<form action="/top_ventas">
 						<input type="submit" value="TOP VENTAS" class="normal-boton">
 					</form>
+					<br>
+					<div id="banner"></div>
 				</div>
 
 				<div id="contenido">

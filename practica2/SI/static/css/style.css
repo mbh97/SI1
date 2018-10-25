@@ -106,6 +106,10 @@ header{
 	font-family:'letra-bonita', serif;
 }
 
+#banner{
+	margin-left: 20px;
+}
+
 li {
 	padding-bottom: 10px;
 	font-size: 18px;
@@ -249,18 +253,26 @@ li {
 	margin-top: 15px;
 	width: 70%;
 }
+.pedidos_extra{
+	border-collapse: collapse;
+	width: 100%;
+}
 
-.pedidos td, .pedidos th {
+.pedidos_extra td, .pedidos_extra th{
+	text-align: left;
+}
+
+.pedidos td, .pedidos th  {
     border: 1px solid black;
     text-align: left;
     padding: 8px;
 }
 
-.pedidos th {
+.pedidos th, .pedidos_extra th {
 	background-color: #d9eeff;
 }
 
-.pedidos tr:nth-child(even) {
+.pedidos tr:nth-child(even), .pedidos_extra tr:nth-child(even) {
     background-color: #f2f9ff;
 }
 
@@ -290,6 +302,15 @@ li {
     border-radius: 4px;
     resize: vertical;
 }
+
+.check-seguridad{
+	width: 300px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
 #error_sesion{
 	color:red;
 }

@@ -8,8 +8,37 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<title>Registro</title>
 
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script language="javascript">
+
+			$(function(){
+				$('#pass').keyup(function(e) {
+					var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+					var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+					var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+					if (false == enoughRegex.test($(this).val())) {
+					     $('#passstrength').html('Mas caracteres.');
+					     $('#passstrength').css('color', 'red');
+					} else if (strongRegex.test($(this).val())) {
+					     $('#passstrength').className = 'ok';
+					     $('#passstrength').html('Fuerte');
+					     $('#passstrength').css('color', 'green');
+					} else if (mediumRegex.test($(this).val())) {
+					     $('#passstrength').className = 'alert';
+					     $('#passstrength').html('Media');
+					     $('#passstrength').css('color', 'orange');
+					} else {
+					     $('#passstrength').className = 'error';
+					     $('#passstrength').html('Debil');
+					     $('#passstrength').css('color', 'yellow');
+					}
+					return true;
+				});
+
+			});
+
+
 			$(function() { //declaramos función
 				$('#registrarse').click(function() {
 					event.preventDefault();
@@ -25,7 +54,7 @@
 							if(response.result == "ERROR_EMAIL"){
 								$("#error_registro").text("Lo sentimos, este email ya esta en uso.");
 							}else{
-								location.href = "/";
+								location.href = "/set_cookie/"+response.result;
 							}
 						},
 						error: function(error) {
@@ -43,7 +72,8 @@
 					contrasenna1 = formulario.contrasenna1.value,
 					contrasenna2 = formulario.contrasenna2.value,
 					tarjeta = formulario.tarjeta.value,
-
+					isChecked = document.getElementById('politica').checked,
+					expresion_tarjeta = /^(?:4\d([\- ])?\d{6}\1\d{5}|(?:4\d{3}|5[1-5]\d{2}|6011)([\- ])?\d{4}\2\d{4}\2\d{4})$/,
 					expresion_correo = /\w+@\w+\.+[a-z]/;
 
 				if(nombre==""||email==""||contrasenna1==""||contrasenna2==""||tarjeta==""){
@@ -54,8 +84,16 @@
 					alert("El email introducido es erroneo.");
 					return false;
 				}
+				if(!expresion_tarjeta.test(tarjeta)){
+					alert("Formato de tarjeta no valido. Debe empezar por 4 y tener 16 numeros.");
+					return false;
+				}
 				if(nombre.length < 2){
 					alert("El nombre debe contener al menos dos caracteres.");
+					return false;
+				}
+				if(contrasenna1.length < 8){
+					alert("La contraseña debe contener minimo 8 caracteres");
 					return false;
 				}
 				if(contrasenna1 != contrasenna2){
@@ -66,13 +104,33 @@
 					alert("La tarjeta ingresada no es correcta.");
 					return false;
 				}
+				if(!isChecked){
+					alert("Debe aceptar la politica de privacidad para registrarse.");
+					return false;
+				}
 				
 				return true;
+			}
+			function open_politica(){
+				window.open("/privacidad", "Politica de privadidad", "width=500, height=650")
+			}
+
+			function actualizar_banner(){ 
+			   	$.ajax({
+			   		url: "/actualizar_banner",
+					cache: false,
+					type: 'POST',
+					success: function(response) {
+						$("#banner").text("Usuarios conectados: " + response.conectados);
+						$("#banner").css('font-weight', 'bold');
+					}
+			   	});
+			   	setTimeout("actualizar_banner()",3000) 
 			}
 		</script>
 	</head>
 
-	<body>
+	<body onload="actualizar_banner()">
 			<header>
 				<div id="cabecera">
 					<a href="/"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
@@ -117,6 +175,8 @@
 					<form action="/top_ventas">
 						<input type="button" value="TOP VENTAS" class="normal-boton">
 					</form>
+					<br>
+					<div id="banner"></div>
 				</div>
 
 				<div id="contenido">
@@ -128,14 +188,15 @@
 						<p>Nombre de usuario
 						<input type="text" name="nombre" placeholder="Nombre" class="input"></p>
 						<p>Contraseña
-						<input type="password" name="contrasenna1" class="input" placeholder="Contraseña"></p>
+						<input type="password" id = "pass" name="contrasenna1" class="input" placeholder="Contraseña"> 
+						<span id="passstrength"></span> 
+						</p>
 						<p>Repetir contraseña
 						<input type="password" name="contrasenna2" class="input" placeholder="Contraseña"></p>
 						<p>Tarjeta de crédito
 						<input type="text" name="tarjeta" placeholder="Tarjeta de crédito" class="input"></p>
 						<br>
-						<input type="checkbox" name="casilla1" class="check-box">  Quiero recibir novedades en mi email.<br>
-						<input type="checkbox" name="casilla2" class="check-box">  He leido y acepto la Poli­tica de privacidad.<br>
+						<input type="checkbox" name="casilla2" class="check-box" id ="politica">  He leido y acepto la <b id="privacidad" style="cursor:pointer;" onclick="open_politica()">Poli­tica de privacidad</b>.<br>
 
 						<br>
 						<input id="registrarse" type="submit" value="REGISTRARSE" class="normal-boton">
