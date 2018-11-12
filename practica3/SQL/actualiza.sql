@@ -7,7 +7,7 @@ ON DELETE CASCADE;
 
 ALTER TABLE products
 ADD FOREIGN KEY (movieid)
-REFERENCES imbd_movie(movieid)
+REFERENCES imdb_movies(movieid)
 ON DELETE CASCADE;
 
 ALTER TABLE orders 
@@ -45,39 +45,39 @@ ADD FOREIGN KEY (movieid)
 REFERENCES imdb_movies(movieid)
 ON DELETE CASCADE;
 
--- Integridad imbd_genres imbd_countries imbd_languages
+-- Integridad imdb_genres imdb_countries imdb_languages
 -- Creacion
-DROP TABLE IF EXISTS genres CASCADE;
-CREATE TABLE imbd_genres(
+DROP TABLE IF EXISTS imdb_genres CASCADE;
+CREATE TABLE imdb_genres(
 	genreid serial NOT NULL,
 	genre varchar(32), 
 	CONSTRAINT genres_pkey PRIMARY KEY (genreid)
 );
 
-DROP TABLE IF EXISTS countries CASCADE;
-CREATE TABLE imbd_countries(
+DROP TABLE IF EXISTS imdb_countries CASCADE;
+CREATE TABLE imdb_countries(
 	countryid serial NOT NULL,
 	country varchar(32),
 	CONSTRAINT countries_pkey PRIMARY KEY(countryid)
 );
 
-DROP TABLE IF EXISTS languages CASCADE;
-CREATE TABLE imbd_languages(
+DROP TABLE IF EXISTS imdb_languages CASCADE;
+CREATE TABLE imdb_languages(
 	languageid serial NOT NULL,
 	language varchar(32),
 	CONSTRAINT languages_pkey PRIMARY KEY(languageid)
 );
 
 -- Poblar tablas
-INSERT INTO imbd_genres(genre)
+INSERT INTO imdb_genres(genre)
 (SELECT DISTINCT genre
 FROM imdb_moviegenres);
 
-INSERT INTO imbd_countries(country)
+INSERT INTO imdb_countries(country)
 (SELECT DISTINCT country
 FROM imdb_moviecountries);
 
-INSERT INTO imbd_languages(language)
+INSERT INTO imdb_languages(language)
 (SELECT DISTINCT language
 FROM imdb_movielanguages);
 
@@ -85,19 +85,19 @@ FROM imdb_movielanguages);
 ALTER TABLE imdb_moviegenres 
 ADD COLUMN genreid INTEGER 
 CONSTRAINT imdb_moviegenres_genreid_fkey
-REFERENCES imbd_genres(genreid)
+REFERENCES imdb_genres(genreid)
 ON DELETE CASCADE;
 
 ALTER TABLE imdb_moviecountries 
 ADD COLUMN countryid INTEGER 
 CONSTRAINT imdb_moviecountries_countryid_fkey
-REFERENCES imbd_countries(countryid)
+REFERENCES imdb_countries(countryid)
 ON DELETE CASCADE;
 
 ALTER TABLE imdb_movielanguages 
 ADD COLUMN languageid INTEGER 
 CONSTRAINT imdb_movielanguages_languageid_fkey
-REFERENCES imbd_languages(languageid)
+REFERENCES imdb_languages(languageid)
 ON DELETE CASCADE;
 
 --Actualiza tablas
