@@ -134,3 +134,12 @@ ALTER TABLE customers ALTER COLUMN country DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN region DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN creditcardtype DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN creditcardexpiration DROP NOT NULL;
+
+--Alert
+DROP TABLE IF EXISTS alerta CASCADE;
+CREATE TABLE alerta(
+	alertid serial NOT NULL,
+	prod_id integer NOT NULL,
+	PRIMARY KEY (alertid),
+	FOREIGN KEY (prod_id) REFERENCES inventory(prod_id) ON DELETE CASCADE
+);

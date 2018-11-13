@@ -4,8 +4,7 @@
 
 
 UPDATE orderdetail
-SET price = quantity *
-			(SELECT products.price * (pow(0.98, (SELECT date_part('year', current_date)) - 
+SET price = (SELECT products.price * (pow(0.98, (SELECT date_part('year', current_date)) - 
 												(SELECT date_part('year', orderdate)
 												 FROM orders
 												 WHERE orders.orderid = orderdetail.orderid))) 

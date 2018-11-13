@@ -1,14 +1,14 @@
 
 
-DROP FUNCTION IF EXISTS getTopMonths(integer, numeric);
-CREATE OR REPLACE FUNCTION getTopMonths(c integer, i numeric)
-RETURNS TABLE(annio integer, mes integer, import numeric, cantidad numeric) AS $$
+DROP FUNCTION IF EXISTS getTopMonths(integer, integer);
+CREATE OR REPLACE FUNCTION getTopMonths(c integer, i integer)
+RETURNS TABLE(annio double precision, mes double precision, import integer, cantidad integer) AS $$
 
 DECLARE
 
 BEGIN
 	return query(
-		SELECT cast(anno AS integer) AS anno, cast(month AS integer) AS month, importe, quantity
+		SELECT anno, month, cast(importe AS integer) AS importe, cast(quantity AS integer) AS quantity
 		FROM (SELECT date_part('year', orderdate) AS anno, date_part('month', orderdate) AS month, SUM(totalamount) AS importe
 			FROM orders
 			GROUP BY anno, month
