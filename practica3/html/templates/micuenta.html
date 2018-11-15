@@ -102,12 +102,14 @@
 									<th>Id</th>
 									<th>Fecha de compra</th>
 									<th>Precio EUR</th>
+									<th>Estado</th>
 	  							</tr>
 	  							{% for compra in historial %}
 		  							<tr id="compra{{compra['id']}}" data-id="{{compra['id']}}" class="opciones">
 		    							<td>{{ compra['id'] }}</td>
 		    							<td>{{ compra['fecha']}}</td>
 										<td>{{ compra['precio']}}</td>
+										<td>{{ compra['status']}}</td>
 		  							</tr>
 									<tr class="{{compra['id']}}" hidden>
 								        <td>
@@ -119,9 +121,9 @@
 								                </tr>
 								                {% for peli in compra['pelis'] %}
 								                <tr>
-								                	<td>{{ peli[0]['titulo'] }}</td>
-					    							<td>{{ peli[1] }}</td>
-													<td>{{ peli[0]['precio']}}</td>
+								                	<td>{{ peli['titulo'] }}</td>
+					    							<td>{{ peli['cantidad'] }}</td>
+													<td>{{ peli['precio'] }}</td>
 												</tr>
 								                {% endfor %}
 								            </table>

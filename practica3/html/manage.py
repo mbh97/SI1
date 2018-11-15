@@ -7,6 +7,7 @@ from random import randint
 import random
 import string
 import time
+import database as db
 
 app = Flask(__name__)
 app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits)for _ in range(20))
@@ -73,17 +74,15 @@ def micuenta():
 		email = getCookie()
 		return render_template('sesion.html', content = email)
 	# USUARIO LOGEADO ==> HISTORIAL
-	usuario = session['username']
-	datos = get_datos_usuario(usuario)
+	customerid = session['customerid']
+	datos = db.getDatosUsuario(customerid)
 
 	usuario_dict = {}
-	usuario_dict['nombre'] = datos['nombre']
+	usuario_dict['nombre'] = datos['firstname'] + ' ' + datos['lastname']
 	usuario_dict['email'] = datos['email']
-	usuario_dict['saldo'] = datos['saldo']
-	usuario_dict['historial'] = {}
-	path = os.path.join(app.root_path,"usuarios/"+str(usuario))
-	historial_dict = json.loads(open(path + '/historial.json').read(), strict=False)
-	return render_template('micuenta.html', usuario = usuario_dict, historial = historial_dict['historial'])
+	usuario_dict['saldo'] = datos['income']
+	historial = db.getHistorialUsuario(customerid)
+	return render_template('micuenta.html', usuario = usuario_dict, historial = historial)
 
 @app.route('/top_ventas')
 def top():
@@ -127,23 +126,14 @@ def signIn():
 	content_dict = {}
 
 	email = request.form['email']
-	usuario = email.split("@")[0]
 	password = request.form['password']
-	password_codificada = hashlib.md5(password.encode()).hexdigest()
-
-	datos = get_datos_usuario(usuario)
-	if datos == None:
-		return jsonify(result="ERROR_EMAIL")
-
-	password = datos['password']
-
-	if(password == password_codificada):
+	r = db.login(email, password)
+	if(r == email):
+		customerid = db.getID(email)
 		session['logged_in'] = True
-		session['username'] = usuario
+		session['customerid'] = customerid
 		session.modified = True
-		return jsonify(result=email)
-
-	return jsonify(result="ERROR_PASSWORD")
+	return jsonify(result=r)
 
 
 @app.route('/registro_usuario',methods=['POST'])

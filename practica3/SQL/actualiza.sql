@@ -65,6 +65,7 @@ DROP TABLE IF EXISTS imdb_languages CASCADE;
 CREATE TABLE imdb_languages(
 	languageid serial NOT NULL,
 	language varchar(32),
+	extrainformation varchar(128),
 	CONSTRAINT languages_pkey PRIMARY KEY(languageid)
 );
 
@@ -77,8 +78,8 @@ INSERT INTO imdb_countries(country)
 (SELECT DISTINCT country
 FROM imdb_moviecountries);
 
-INSERT INTO imdb_languages(language)
-(SELECT DISTINCT language
+INSERT INTO imdb_languages(language, extrainformation)
+(SELECT DISTINCT language, extrainformation
 FROM imdb_movielanguages);
 
 --Modifica relaciones
@@ -124,6 +125,8 @@ WHERE imdb_movielanguages.language = imdb_languages.language;
 
 ALTER TABLE imdb_movielanguages 
 DROP COLUMN language;
+ALTER TABLE imdb_movielanguages 
+DROP COLUMN extrainformation;
 
 -- Not null
 ALTER TABLE customers ALTER COLUMN firstname DROP NOT NULL;
