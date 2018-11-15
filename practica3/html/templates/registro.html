@@ -138,14 +138,9 @@
 						<form action="{{url_for('buscar')}}" name="buscador" method="post">
 							<select id=filtro name="FiltrarPorGenero">
 								<option selected disabled hidden>Genero</option>
-		  						<option value="Accion">Accion</option>
-		  						<option value="Animacion">Animacion</option>
-		  						<option value="Ficcion">Ficcion</option>
-		  						<option value="Comedia">Comedia</option>
-		  						<option value="Drama">Drama</option>
-		  						<option value="Misterio">Misterio</option>
-		  						<option value="Musical">Musical</option>
-		  						<option value="Romantica">Romantica</option>
+								{% for categoria in content['categorias'] %}
+									<option value="{{categoria}}">{{categoria}}</option>
+								{% endfor %}
 							</select>
 		      				<input id="text-buscar" type="text" placeholder="Buscar..." name="titulo">
 		      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
@@ -153,7 +148,7 @@
 					</div>
 					<div id="head-right">
 						<form action="{{url_for('micuenta')}}">
-    						<input type="button" value="Mi cuenta" class="max-boton">
+    						<input type="submit" value="Mi cuenta" class="max-boton">
 						</form>
 						<a href="{{url_for('carrito')}}"><img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/></a>
 					</div>
@@ -163,17 +158,12 @@
 				<div id="menu">
 					<h1 id="categorias"><b>Categorias</b></h1>
 					<ul>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Accion')}}">Accion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Animacion')}}">Animacion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Ficcion')}}">Ficcion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Comedia')}}">Comedia</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Drama')}}">Drama</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Misterio')}}">Misterio</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Musical')}}">Musical</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Romantica')}}">Romantica</a></li>
+						{% for categoria in content['categorias'] %}
+							<li><a href="{{url_for('mostrar_categoria', categoria = categoria)}}">{{categoria}}</a></li>
+						{%endfor%}
 					</ul>
 					<form action="{{url_for('top')}}">
-						<input type="button" value="TOP VENTAS" class="normal-boton">
+						<input type="submit" value="TOP VENTAS" class="normal-boton">
 					</form>
 					<br>
 					<div id="banner"></div>

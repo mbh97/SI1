@@ -22,14 +22,9 @@ def index():
 		session['precio'] = 0
 
 	content_dict['peliculas'] = db.getNovedades()
-	print content_dict['peliculas']
 	content_dict['categoriaActual'] = 'Ultimas novedades'
 	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
-
-
-def in_categoria(pelicula,categoria):
-	return categoria in pelicula['categoria']
 
 @app.route('/categorias/<categoria>')
 def mostrar_categoria(categoria):
@@ -39,16 +34,11 @@ def mostrar_categoria(categoria):
 	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
 
-
-def encontrar_peli(peliculas, titulo):
-	for peli in peliculas:
-		if peli['titulo'] == titulo:
-			return peli
-	return None
-
 @app.route('/peliculas/<movieid>')
 def pelicula(movieid):
-	content = db.getInfo(movieid)
+	content={}
+	content['pelicula']= db.getInfo(movieid)
+	content['categorias'] = db.getCategorias()
 	return render_template('pelicula.html', content=content)
 
 @app.route('/search' ,methods=['POST'])
@@ -162,7 +152,6 @@ def signUp():
 	r = db.crearUsuario(email, nombre, contrasenna1, tarjeta)
 	if r != "ERROR_EMAIL":
 		session['logged_in'] = True
-		print r
 		session['customerid'] = r #id
 		return jsonify(result=email)
 
