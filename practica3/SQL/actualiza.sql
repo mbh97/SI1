@@ -128,6 +128,14 @@ DROP COLUMN language;
 ALTER TABLE imdb_movielanguages 
 DROP COLUMN extrainformation;
 
+
+-- Columna descripcion peli
+ALTER TABLE imdb_movies 
+ADD COLUMN description varchar(1024);
+
+UPDATE imdb_movies
+SET description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+
 -- Not null
 ALTER TABLE customers ALTER COLUMN firstname DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN lastname DROP NOT NULL;
@@ -137,6 +145,8 @@ ALTER TABLE customers ALTER COLUMN country DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN region DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN creditcardtype DROP NOT NULL;
 ALTER TABLE customers ALTER COLUMN creditcardexpiration DROP NOT NULL;
+ALTER TABLE customers ALTER COLUMN username DROP NOT NULL;
+
 
 --Alert
 DROP TABLE IF EXISTS alerta CASCADE;
@@ -146,3 +156,8 @@ CREATE TABLE alerta(
 	PRIMARY KEY (alertid),
 	FOREIGN KEY (prod_id) REFERENCES inventory(prod_id) ON DELETE CASCADE
 );
+
+-- actualizar los serial id
+--SELECT setval('alertas_alertaid_seq', (SELECT max(alertaid) FROM alertas));
+SELECT setval('customers_customerid_seq', (SELECT max(customerid) FROM customers));
+SELECT setval('orders_orderid_seq', (SELECT max(orderid) FROM orders));

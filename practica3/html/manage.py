@@ -21,8 +21,10 @@ def index():
 	if session.get("precio") == None:
 		session['precio'] = 0
 
-	content_dict['peliculas'] = [pelicula for pelicula in catalogo['peliculas'] if pelicula['anno'] == 2018]
+	content_dict['peliculas'] = db.getNovedades()
+	print content_dict['peliculas']
 	content_dict['categoriaActual'] = 'Ultimas novedades'
+	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
 
 
@@ -33,7 +35,8 @@ def in_categoria(pelicula,categoria):
 def mostrar_categoria(categoria):
 	content_dict = {}
 	content_dict['categoriaActual'] = categoria
-	content_dict['peliculas'] = [pelicula for pelicula in catalogo['peliculas'] if in_categoria(pelicula,categoria)]
+	content_dict['peliculas'] = db.getCategoria(categoria)
+	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
 
 
@@ -43,9 +46,9 @@ def encontrar_peli(peliculas, titulo):
 			return peli
 	return None
 
-@app.route('/peliculas/<pelicula>')
-def pelicula(pelicula):
-	content = encontrar_peli(catalogo['peliculas'], pelicula.replace ("%20", ""))
+@app.route('/peliculas/<movieid>')
+def pelicula(movieid):
+	content = db.getInfo(movieid)
 	return render_template('pelicula.html', content=content)
 
 @app.route('/search' ,methods=['POST'])
@@ -54,19 +57,32 @@ def buscar():
 	if 'FiltrarPorGenero' not in request.form:
 		if titulo == "":
 			return index()
+		pelis = db.getPelis(titulo)
+		if pelis == []:
+			return render_template('pelicula.html', content = pelis)
+		if len(pelis) == 1:
+			return pelicula(pelis[0])
 
-		peli = encontrar_peli(catalogo['peliculas'],  titulo)
-		return render_template('pelicula.html', content=peli)
+		content_dict ={}
+		content_dict['peliculas'] = pelis
+		content_dict['categoriaActual'] = titulo
+		content_dict['categorias'] = db.getCategorias()
+		return render_template('index.html', content=content_dict)
+
 	genero = request.form['FiltrarPorGenero']
 	if titulo == "":
 		return mostrar_categoria(genero)
-	peli = encontrar_peli(catalogo['peliculas'],  titulo)
-	if peli == None:
-		return render_template('pelicula.html', content = peli)
-	if in_categoria(peli,genero)==False:
-		peli = None
-		return render_template('pelicula.html', content = peli)
-	return render_template('pelicula.html', content = peli)
+	
+	pelis = db.pertenece(titulo, genero)
+	if pelis == []:
+		return render_template('pelicula.html', content = pelis)
+	if len(pelis) == 1:
+			return pelicula(pelis[0])
+	content_dict ={}
+	content_dict['peliculas'] = pelis
+	content_dict['categoriaActual'] = titulo
+	content_dict['categorias'] = db.getCategorias()
+	return render_template('index.html', content=content_dict)
 
 @app.route('/micuenta')
 def micuenta():
@@ -78,7 +94,7 @@ def micuenta():
 	datos = db.getDatosUsuario(customerid)
 
 	usuario_dict = {}
-	usuario_dict['nombre'] = datos['firstname'] + ' ' + datos['lastname']
+	usuario_dict['nombre'] = datos['firstname']
 	usuario_dict['email'] = datos['email']
 	usuario_dict['saldo'] = datos['income']
 	historial = db.getHistorialUsuario(customerid)
@@ -87,9 +103,9 @@ def micuenta():
 @app.route('/top_ventas')
 def top():
 	content_dict = {}
-	top = sorted(catalogo['peliculas'], key=lambda x: -int(x['ventas']))
 	content_dict['categoriaActual'] = 'TOP VENTAS'
-	content_dict['peliculas'] = top[:10]
+	content_dict['peliculas'] = db.getTopVentas()
+	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
 
 @app.route('/registro')
@@ -143,35 +159,14 @@ def signUp():
 	nombre = request.form['nombre']
 	contrasenna1 = request.form['contrasenna1']
 	tarjeta = request.form['tarjeta']
-	usuario = usuario = email.split("@")[0]
-	path = os.path.join(app.root_path,"usuarios/"+str(usuario))
+	r = db.crearUsuario(email, nombre, contrasenna1, tarjeta)
+	if r != "ERROR_EMAIL":
+		session['logged_in'] = True
+		print r
+		session['customerid'] = r #id
+		return jsonify(result=email)
 
-	list_user = os.listdir(os.path.join(app.root_path,"usuarios"))
-	if list_user != []:
-		if usuario in list_user:
-			return jsonify(result="ERROR_EMAIL")
-
-	os.mkdir(path)
-
-	f=open(path+"/datos.dat","a")
-	f.write("nombre = "+ nombre +"\n")
-	contrasenna1 = hashlib.md5(contrasenna1.encode()).hexdigest()
-	f.write("password = "+ contrasenna1 +"\n")
-	f.write("email = "+ email +"\n")
-	f.write("tarjeta = "+ tarjeta +"\n")
-	saldo = randint(0,100)
-	f.write("saldo = "+ str(saldo) +"\n")
-	f.close()
-
-	datos = {
-	    "historial": []
-	}
-	with open(path+"/historial.json", 'w') as file:
-		json.dump(datos, file)
-
-	session['logged_in'] = True
-	session['username'] = usuario
-	return jsonify(result=email)
+	return jsonify(result=r)
 
 @app.route('/cerrar_sesion')
 def signOut():

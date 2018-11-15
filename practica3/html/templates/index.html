@@ -47,14 +47,9 @@
 						<form action="{{url_for('buscar')}}" name="buscador" method="post">
 							<select id=filtro name="FiltrarPorGenero">
 								<option selected disabled hidden>Genero</option>
-		  						<option value="Accion">Accion</option>
-		  						<option value="Animacion">Animacion</option>
-		  						<option value="Ficcion">Ficcion</option>
-		  						<option value="Comedia">Comedia</option>
-		  						<option value="Drama">Drama</option>
-		  						<option value="Misterio">Misterio</option>
-		  						<option value="Musical">Musical</option>
-		  						<option value="Romantica">Romantica</option>
+								{% for categoria in content['categorias'] %}
+									<option value="{{categoria}}">{{categoria}}</option>
+								{% endfor %}
 							</select>
 		      				<input id="text-buscar" type="text" placeholder="Buscar..." name="titulo">
 		      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
@@ -72,14 +67,9 @@
 				<div id="menu">
 					<h1 id="categorias"><b>Categorias</b></h1>
 					<ul>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Accion')}}">Accion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Animacion')}}">Animacion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Ficcion')}}">Ficcion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Comedia')}}">Comedia</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Drama')}}">Drama</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Misterio')}}">Misterio</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Musical')}}">Musical</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Romantica')}}">Romantica</a></li>
+						{% for categoria in content['categorias'] %}
+							<li><a href="{{url_for('mostrar_categoria', categoria = categoria)}}">{{categoria}}</a></li>
+						{%endfor%}
 					</ul>
 					<form action="{{url_for('top')}}">
 						<input type="submit" value="TOP VENTAS" class="normal-boton">
@@ -96,8 +86,8 @@
 						<div class="fila">
 						{% for peli in content['peliculas'] %}
 							<div class="pelicula">
-								<a href="{{url_for('pelicula', pelicula=peli['titulo'])}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
-								<p> {{peli['titulo']}}</p>
+								<a href="{{url_for('pelicula', movieid=peli['id'])}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
+								<p id="long_titulo"> {{peli['titulo']}}</p>
 								<p> {{peli['precio']}}</p>
 								<input type="submit" value="Añadir al carrito" class="botones" onclick="add_carrito({{peli['id']}})">
 							</div>

@@ -54,7 +54,7 @@
 							if(response.result == "ERROR_EMAIL"){
 								$("#error_registro").text("Lo sentimos, este email ya esta en uso.");
 							}else{
-								location.href = base_url.concat("/set_cookie/").concat(response.result);
+								location.href = base_url.concat("set_cookie/").concat(response.result);
 							}
 						},
 						error: function(error) {

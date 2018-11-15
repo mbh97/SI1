@@ -22,10 +22,12 @@ def db_listOfMovies1949():
     except:
         return 'Something is broken'
 
+def existeEmail(email):
+    query = text('select * from customers where email=:e')
+    return list(db_conn.execute(query, e = email).fetchall())
 
 def login(email, password):
-    query = text('select * from customers where email=:e')
-    result = list(db_conn.execute(query, e = email).fetchall())
+    result = existeEmail(email)
     if result == []:
         return "ERROR_EMAIL"
     if password != result[0]['password']:
@@ -75,22 +77,122 @@ def getDetalleHistorial(orderid):
 
     return pelis
 
-# ultimas novedades: select * from imdb_movies order by year desc limit 30;
+def crearUsuario(email, nombre, password, tarjeta):
+    result = existeEmail(email)
+    if(result != []):
+        return "ERROR_EMAIL"
+    query = text('insert into customers(email,firstname,password,creditcard) values(:e, :n, :p, :t)')
+    db_conn.execute(query, e = email, n=nombre, p=password, t=tarjeta)
+    actualizaIDCustomers()
 
-# top ventas: 
-    #select movietitle 
-    #from (select movieid, sum(quantity) AS top
-    #        from orderdetail 
-    #        inner join products using(prod_id)
-    #        inner join imdb_movies using(movieid)
-    #        group by movieid
-    #        order by top desc) as aux
-    #inner join imdb_movies using(movieid)
-    #limit 20;
-    
-# mostrarCategoria(category):
-#    select movietitle
-#    from imdb_movies
-#    inner join imdb_moviegenres using(movieid)
-#    inner join imdb_genres using(genreid)
-#    where genre = category
+    return getID(email)
+
+def actualizaIDCustomers():
+    query = text("SELECT setval('customers_customerid_seq', (SELECT max(customerid) FROM customers))")
+    db_result = db_conn.execute(query).fetchall()
+
+def getNovedades():
+    query = text("select movieid, movietitle, price from imdb_movies inner join products using(movieid) order by year desc limit 20")
+    result = list(db_conn.execute(query).fetchall())
+    pelis = []
+    for r in result:
+        dic={
+            'id':r[0], 
+            'titulo':r[1], 
+            'precio':r[2] 
+        }
+        pelis.append(dic)
+    return pelis
+
+
+def getTopVentas():
+    query = text('select distinct on (movieid) movieid,movietitle,price \
+                  from imdb_movies\
+                  inner join products using(movieid) \
+                  inner join inventory using(prod_id) \
+                  order by sales desc limit 20')
+    result = list(db_conn.execute(query).fetchall())
+    pelis = []
+    for r in result:
+        dic={
+            'id':r[0], 
+            'titulo':r[1], 
+            'precio':r[2] 
+        }
+        pelis.append(dic)
+    return pelis
+
+def getCategoria(categoria):
+    query = text('select movieid,movietitle,price\
+                  from imdb_movies \
+                  inner join imdb_moviegenres using(movieid)\
+                  inner join imdb_genres using(genreid)\
+                  inner join products using(movieid)\
+                  where genre = :c')
+    result = list(db_conn.execute(query, c=categoria).fetchall())
+    pelis = []
+    for r in result:
+        dic={
+            'id':r[0], 
+            'titulo':r[1], 
+            'precio':r[2] 
+        }
+        pelis.append(dic)
+    return pelis
+
+def getCategorias():
+    query = text('select genre from imdb_genres')
+    result = list(db_conn.execute(query).fetchall())
+    categorias = []
+    for r in result:
+        categorias.append(r[0])
+    return categorias
+
+def getPelis(titulo):
+    query = text('select movieid, price from imdb_movies inner join products using(movieid) where movietitle=:t')
+    result = list(db_conn.execute(query, t=titulo).fetchall())
+    pelis = []
+    for r in result:
+        dic={
+            'id':r[0], 
+            'titulo':titulo, 
+            'precio':r[1] 
+        }
+        pelis.append(dic)
+    return pelis
+
+def pertenece(titulo, genero):
+    query = text('select movieid, price \
+                  from imdb_movies \
+                  inner join products using(movieid) \
+                  inner join imdb_moviegenres using(movieid)\
+                  inner join imdb_genres using(genreid)\
+                  where movietitle=:t and genre=:g')
+    result = list(db_conn.execute(query, t=titulo, g=genero).fetchall())
+    pelis = []
+    for r in result:
+        dic={
+            'id':r[0], 
+            'titulo':titulo, 
+            'precio':r[1] 
+        }
+        pelis.append(dic)
+    return pelis
+
+def getInfo(movieid):
+    query = text('select movietitle, imdb_movies.description, price, directorname,year \
+                  from imdb_movies \
+                  inner join products using(movieid) \
+                  inner join imdb_directormovies using(movieid)\
+                  inner join imdb_directors using(directorid)\
+                  where movieid=:i')
+    r = list(db_conn.execute(query, i=movieid).fetchall())[0]
+    dic={
+        'id':movieid, 
+        'titulo':r[0], 
+        'precio':r[2],
+        'informacion':r[1],
+        'director':r[3],
+        'anno':r[4]
+    }
+    return dic
