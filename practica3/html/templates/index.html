@@ -86,7 +86,7 @@
 						<div class="fila">
 						{% for peli in content['peliculas'] %}
 							<div class="pelicula">
-								<a href="{{url_for('pelicula', movieid=peli['id'])}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
+								<a href="{{url_for('pelicula', prod_id=peli['id'])}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
 								<p id="long_titulo"> {{peli['titulo']}}</p>
 								<p> {{peli['precio']}}</p>
 								<input type="submit" value="Añadir al carrito" class="botones" onclick="add_carrito({{peli['id']}})">

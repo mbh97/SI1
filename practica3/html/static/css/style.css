@@ -171,19 +171,15 @@ li {
 	text-align: center;
 	margin-top: 40px;
 	margin-left: 90px;
-	width: 600px;
 }
 
-#long_titulo{
-	width: 20px;
-}
 
 .pelicula{
 	font-size: 18px;
 	margin-left: 90px;
 	margin-bottom: 50px;
 	line-height: 5px;
-	width: 20px;
+	width: 230px;
 }
 
 .imgs{

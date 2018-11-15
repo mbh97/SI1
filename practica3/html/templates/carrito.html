@@ -74,14 +74,9 @@
 						<form action="{{url_for('buscar')}}" name="buscador" method="post">
 							<select id=filtro name="FiltrarPorGenero">
 								<option selected disabled hidden>Genero</option>
-		  						<option value="Accion">Accion</option>
-		  						<option value="Animacion">Animacion</option>
-		  						<option value="Ficcion">Ficcion</option>
-		  						<option value="Comedia">Comedia</option>
-		  						<option value="Drama">Drama</option>
-		  						<option value="Misterio">Misterio</option>
-		  						<option value="Musical">Musical</option>
-		  						<option value="Romantica">Romantica</option>
+								{% for categoria in categorias %}
+									<option value="{{categoria}}">{{categoria}}</option>
+								{% endfor %}
 							</select>
 		      				<input id="text-buscar" type="text" placeholder="Buscar..." name="titulo">
 		      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
@@ -91,7 +86,7 @@
 						<form action="{{url_for('micuenta')}}">
     						<input type="submit" value="Mi cuenta" class="max-boton">
 						</form>
-						<img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/>
+						<a href="{{url_for('carrito')}}"><img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/></a>
 					</div>
 				</div>
 			</header>
@@ -99,14 +94,9 @@
 				<div id="menu">
 					<h1 id="categorias"><b>Categorias</b></h1>
 					<ul>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Accion')}}">Accion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Animacion')}}">Animacion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Ficcion')}}">Ficcion</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Comedia')}}">Comedia</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Drama')}}">Drama</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Misterio')}}">Misterio</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Musical')}}">Musical</a></li>
-						<li><a href="{{url_for('mostrar_categoria', categoria = 'Romantica')}}">Romantica</a></li>
+						{% for categoria in categorias %}
+							<li><a href="{{url_for('mostrar_categoria', categoria = categoria)}}">{{categoria}}</a></li>
+						{%endfor%}
 					</ul>
 					<form action="{{url_for('top')}}">
 						<input type="submit" value="TOP VENTAS" class="normal-boton">
@@ -128,11 +118,11 @@
 									<th>Eliminar</th>
 	  							</tr>
 	  							{% for dic in carrito %}
-		  							<tr id = "{{dic['peli']['id']}}">
-		    							<td>{{ dic['peli']['titulo'] }}</td>
-										<td>{{dic['n']}}</td>
-										<td>{{dic['peli']['precio']}}</td>
-										<td><INPUT class ="borrar" type="radio" name="eliminar" value="eliminar" onclick="borrar({{dic['peli']['id']}})"></td>
+		  							<tr id = "{{dic['id']}}">
+		    							<td>{{ dic['titulo'] }}</td>
+										<td>{{dic['cantidad']}}</td>
+										<td>{{dic['precio']}}</td>
+										<td><INPUT class ="borrar" type="radio" name="eliminar" value="eliminar" onclick="borrar({{dic['id']}})"></td>
 		  							</tr>
 		  						{% endfor %}
 							</table>

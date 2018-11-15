@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, func
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.sql import select
 
@@ -92,7 +92,7 @@ def actualizaIDCustomers():
     db_result = db_conn.execute(query).fetchall()
 
 def getNovedades():
-    query = text("select movieid, movietitle, price from imdb_movies inner join products using(movieid) order by year desc limit 20")
+    query = text("select prod_id, movietitle, price from imdb_movies inner join products using(movieid) order by year desc limit 20")
     result = list(db_conn.execute(query).fetchall())
     pelis = []
     for r in result:
@@ -106,7 +106,7 @@ def getNovedades():
 
 
 def getTopVentas():
-    query = text('select distinct on (movieid) movieid,movietitle,price \
+    query = text('select distinct on (prod_id) prod_id,movietitle,price \
                   from imdb_movies\
                   inner join products using(movieid) \
                   inner join inventory using(prod_id) \
@@ -123,7 +123,7 @@ def getTopVentas():
     return pelis
 
 def getCategoria(categoria):
-    query = text('select movieid,movietitle,price\
+    query = text('select prod_id,movietitle,price\
                   from imdb_movies \
                   inner join imdb_moviegenres using(movieid)\
                   inner join imdb_genres using(genreid)\
@@ -149,7 +149,7 @@ def getCategorias():
     return categorias
 
 def getPelis(titulo):
-    query = text('select movieid, price from imdb_movies inner join products using(movieid) where movietitle=:t')
+    query = text('select prod_id, price from imdb_movies inner join products using(movieid) where movietitle=:t')
     result = list(db_conn.execute(query, t=titulo).fetchall())
     pelis = []
     for r in result:
@@ -162,7 +162,7 @@ def getPelis(titulo):
     return pelis
 
 def pertenece(titulo, genero):
-    query = text('select movieid, price \
+    query = text('select prod_id, price \
                   from imdb_movies \
                   inner join products using(movieid) \
                   inner join imdb_moviegenres using(movieid)\
@@ -179,16 +179,17 @@ def pertenece(titulo, genero):
         pelis.append(dic)
     return pelis
 
-def getInfo(movieid):
+def getInfo(prod_id):
     query = text('select movietitle, imdb_movies.description, price, directorname,year \
                   from imdb_movies \
                   inner join products using(movieid) \
                   inner join imdb_directormovies using(movieid)\
                   inner join imdb_directors using(directorid)\
-                  where movieid=:i')
-    r = list(db_conn.execute(query, i=movieid).fetchall())[0]
+                  where prod_id=:i')
+    print prod_id
+    r = list(db_conn.execute(query, i=prod_id).fetchall())[0]
     dic={
-        'id':movieid, 
+        'id':prod_id, 
         'titulo':r[0], 
         'precio':r[2],
         'informacion':r[1],
@@ -196,3 +197,52 @@ def getInfo(movieid):
         'anno':r[4]
     }
     return dic
+
+def iniciarCarrito():
+    query = text('insert into orders(orderdate,netamount,tax,totalamount) values(CURRENT_DATE,0,0,0)')
+    db_conn.execute(query)
+
+
+def actualizaIDOrders():
+    query = text("SELECT setval('orders_orderid_seq', (SELECT max(orderid) FROM orders))")
+    db_result = db_conn.execute(query).fetchall()
+
+def getIDCarrito():
+    query = text('SELECT max(orderid) FROM orders')
+    return list(db_conn.execute(query))[0][0]
+
+def inCarrito(prod_id, orderid):
+    query = text('select * from orderdetail inner join products using(prod_id) where orderid=:o and prod_id=:p')
+    result = list(db_conn.execute(query, o=orderid, p=prod_id).fetchall())
+    if result ==[]:
+        return False
+    return True
+
+def insertOrderdetail(orderid, prod_id, n):
+    query = text('insert into orderdetail(orderid,prod_id,price,quantity) values(:o,:p,(select price from products where prod_id=:p),:q)')
+    db_conn.execute(query, o=orderid, p=prod_id, q=n)
+
+
+def updateOrderdetail(orderid, prod_id, n):
+    query = text('update orderdetail set quantity=quantity+:q where orderid=:o and prod_id=:p')
+    db_conn.execute(query, o=orderid, p=prod_id, q=n)
+
+def getOrderdetails(orderid):
+    query = text('select prod_id, movietitle, quantity, orderdetail.price from orderdetail inner join products using(prod_id) inner join imdb_movies using(movieid) where orderid=:o')
+    result = list(db_conn.execute(query, o=orderid).fetchall())
+    orderdetail=[]
+    precio = 0
+    for r in result:
+        precio +=  r[3]*r[2]
+        dic={
+            'id': r[0],
+            'titulo':r[1],
+            'cantidad': r[2],
+            'precio': r[3]
+        }
+        orderdetail.append(dic)
+    carrito={
+        'orderdetail':orderdetail,
+        'precio': precio
+    }
+    return carrito

@@ -16,6 +16,12 @@ catalogo = json.loads(open(os.path.join(app.root_path,'catalogo.json')).read(), 
 @app.route('/')
 def index():
 	content_dict = {}
+
+	if session.get('logged_in') == None:
+		session['logged_in'] = False
+		db.iniciarCarrito()
+	
+	#borrar en el futuro
 	if session.get("carrito") == None:
 		session['carrito'] = []
 	if session.get("precio") == None:
@@ -34,10 +40,10 @@ def mostrar_categoria(categoria):
 	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
 
-@app.route('/peliculas/<movieid>')
-def pelicula(movieid):
+@app.route('/peliculas/<prod_id>')
+def pelicula(prod_id):
 	content={}
-	content['pelicula']= db.getInfo(movieid)
+	content['pelicula']= db.getInfo(prod_id)
 	content['categorias'] = db.getCategorias()
 	return render_template('pelicula.html', content=content)
 
@@ -76,7 +82,7 @@ def buscar():
 
 @app.route('/micuenta')
 def micuenta():
-	if not session.get('logged_in'):
+	if session.get('logged_in') == False:
 		email = getCookie()
 		return render_template('sesion.html', content = email)
 	# USUARIO LOGEADO ==> HISTORIAL
@@ -159,7 +165,8 @@ def signUp():
 
 @app.route('/cerrar_sesion')
 def signOut():
-	session['logged_in'] = False
+	session['logged_in'] = None
+	#hay que eliminar carrito
 	return redirect(url_for('index'))
 
 @app.route('/set_cookie/<usuario>')
@@ -174,7 +181,10 @@ def getCookie():
 
 @app.route('/carrito')
 def carrito():
-	return render_template('carrito.html', carrito = session['carrito'], precio = session['precio'])
+	orderid = db.getIDCarrito()
+	carrito = db.getOrderdetails(orderid)
+	categorias = db.getCategorias()
+	return render_template('carrito.html', carrito = carrito['orderdetail'], precio = carrito['precio'], categorias= categorias)
 
 def buscar_peli_id(id):
 	for pelicula in catalogo['peliculas']:
@@ -190,21 +200,12 @@ def calcular_precio():
 
 @app.route('/add_carrito/<id>/<n>',methods=['GET','POST'])
 def add_carrito(id, n):
-	peli = buscar_peli_id(id)
-
-	#si la peli esta ya en el carrito, aumentamos el numero de pelis
-	for dic in session['carrito']:
-		if dic['peli'] == peli:
-			dic['n'] += eval(n)
-			session['precio'] = calcular_precio()
-			return jsonify()
-
-	# peli no incluida en carrito
-	dic = {}
-	dic['peli'] = peli
-	dic['n'] = eval(n)
-	session['carrito'].append(dic)
-	session['precio'] = calcular_precio()
+	prod_id = id
+	orderid = db.getIDCarrito()
+	if db.inCarrito(id, orderid) == False: #la peli no esta en el carrito
+		db.insertOrderdetail(orderid, prod_id, n)
+	else: #modificar cantidad de dicha peli
+		db.updateOrderdetail(orderid, prod_id, n)
 	return jsonify()
 
 @app.route('/comprar',methods=['GET','POST'])
