@@ -2,6 +2,7 @@ import os
 from sqlalchemy import create_engine, text, func
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.sql import select
+from random import randint
 
 # configurar el motor de sqlalchemy
 db_engine = create_engine("postgresql://alumnodb:alumnodb@localhost/si1", echo=False)
@@ -81,8 +82,8 @@ def crearUsuario(email, nombre, password, tarjeta):
     result = existeEmail(email)
     if(result != []):
         return "ERROR_EMAIL"
-    query = text('insert into customers(email,firstname,password,creditcard) values(:e, :n, :p, :t)')
-    db_conn.execute(query, e = email, n=nombre, p=password, t=tarjeta)
+    query = text('insert into customers(email,firstname,password,creditcard,income) values(:e, :n, :p, :t, :d)')
+    db_conn.execute(query, e = email, n=nombre, p=password, t=tarjeta, d=randint(10,100))
     actualizaIDCustomers()
 
     return getID(email)
@@ -201,6 +202,8 @@ def getInfo(prod_id):
 def iniciarCarrito():
     query = text('insert into orders(orderdate,netamount,tax,totalamount) values(CURRENT_DATE,0,0,0)')
     db_conn.execute(query)
+    actualizaIDOrders()
+
 
 
 def actualizaIDOrders():
@@ -231,9 +234,7 @@ def getOrderdetails(orderid):
     query = text('select prod_id, movietitle, quantity, orderdetail.price from orderdetail inner join products using(prod_id) inner join imdb_movies using(movieid) where orderid=:o')
     result = list(db_conn.execute(query, o=orderid).fetchall())
     orderdetail=[]
-    precio = 0
     for r in result:
-        precio +=  r[3]*r[2]
         dic={
             'id': r[0],
             'titulo':r[1],
@@ -241,8 +242,31 @@ def getOrderdetails(orderid):
             'precio': r[3]
         }
         orderdetail.append(dic)
+    precio = getTotal(orderid)
+
     carrito={
         'orderdetail':orderdetail,
         'precio': precio
     }
     return carrito
+
+def deleteOrderdetail(orderid, prod_id):
+    query = text('delete from orderdetail where prod_id=:p and orderid=:o')
+    db_conn.execute(query, p=prod_id, o=orderid)
+
+def getTotal(orderid):
+    query = text('select totalamount from orders where orderid=:o')
+    result = db_conn.execute(query, o=orderid).fetchall()
+    price = result[0][0]
+    return price 
+
+def comprar(orderid, customerid):
+    query = text('update orders set status=:s where orderid=:o')
+    db_conn.execute(query, o=orderid, s='Paid')
+    query = text('select totalamount from orders where orderid=:o')
+    total = db_conn.execute(query, o=orderid).fetchall()[0][0]
+    query = text('update customers set income = income -:n where customerid=:i')
+    db_conn.execute(query, i=customerid, n=total)
+
+
+

@@ -210,72 +210,30 @@ def add_carrito(id, n):
 
 @app.route('/comprar',methods=['GET','POST'])
 def comprar():
-	if session['precio'] == 0:
+	orderid = db.getIDCarrito()
+	if db.getTotal(orderid) == 0:
 		return jsonify(result="NOT_CARRITO")
 
 	if not session.get('logged_in'):
 		return jsonify(result="NOT_SESSION")
 
 	#comprobar que tenga dinero suficiente en su cuenta
-	usuario = session['username']
-	usuario_info = get_datos_usuario(usuario)
-	if session['precio'] > usuario_info['saldo']:
+	customerid = session['customerid']
+	datos = db.getDatosUsuario(customerid)
+	if db.getTotal(orderid) > datos['income']:
 		return jsonify(result="NOT_MONEY")
 
-	path = os.path.join(app.root_path,"usuarios/"+str(usuario))
-
-	#restar dinero usuario
-	f=open(path+"/datos.dat","w")
-	f.write("nombre = "+ usuario_info['nombre'] +"\n")
-	f.write("password = "+ usuario_info['password'] +"\n")
-	f.write("email = "+ usuario_info['email'] +"\n")
-	f.write("tarjeta = "+ usuario_info['tarjeta'] +"\n")
-	new_saldo = usuario_info['saldo'] - session['precio']
-	f.write("saldo = "+ str(new_saldo) +"\n")
-	f.close()
-
-	#aumentar ventas de las peliculas (para el futuro)
-	for dic in session['carrito']:
-		for peli in catalogo['peliculas']:
-			if peli == dic['peli']:
-				peli['ventas'] += dic['n']
-
-	with open(os.path.join(app.root_path,'catalogo.json'), 'w') as file:
-		json.dump(catalogo, file)
-
-	#escribir historial
-	historial = json.loads(open(path+"/historial.json").read(), strict=False)
-	lastid = 0
-	if historial['historial'] != []:
-		lastid = historial['historial'][-1]['id']
-
-	datos = {}
-	datos['id'] = lastid +1
-	datos['fecha'] = time.strftime("%d/%m/%y")
-	datos['precio'] = session['precio']
-	datos['pelis'] = []
-	for dic in session['carrito']:
-		datos['pelis'].append([dic['peli'], dic['n']])
-
-	historial['historial'].append(datos)
-
-	with open(path+"/historial.json", 'w') as file:
-		json.dump(historial, file)
-
-	session['carrito'] = []
-	session['precio'] = 0
+	db.comprar(orderid, customerid)
+	db.iniciarCarrito()
 
 	return jsonify(result="OK")
 
 @app.route('/borrar/<id>', methods=['GET','POST'])
 def borrar(id):
-	i = 0
-	for dic in session['carrito']:
-		if dic['peli']['id'] == id:
-			session['precio'] -= dic['peli']['precio']*dic['n']
-			session['carrito'].pop(i)
-			return jsonify(result="OK", precio = session['precio'])
-		i += 1
+	orderid = db.getIDCarrito()
+	db.deleteOrderdetail(orderid, id)
+	r = db.getTotal(db.getIDCarrito())
+	return jsonify(result="OK", precio = str(r))	
 
 @app.route('/actualizar_banner', methods=['GET','POST'])
 def actualizar_banner():
