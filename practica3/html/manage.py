@@ -184,29 +184,29 @@ def carrito():
 	orderid = db.getIDCarrito()
 	carrito = db.getOrderdetails(orderid)
 	categorias = db.getCategorias()
-	return render_template('carrito.html', carrito = carrito['orderdetail'], precio = carrito['precio'], categorias= categorias)
+	precio = str(carrito['precio'])
+	return render_template('carrito.html', carrito = carrito['orderdetail'], precio = precio[:precio.find(".")+2], categorias= categorias)
 
 def buscar_peli_id(id):
 	for pelicula in catalogo['peliculas']:
 		if pelicula['id'] == id:
 			return pelicula
 
-def calcular_precio():
-	precio = 0
-	for dic in session['carrito']:
-		precio += dic['n']*dic['peli']['precio']
-
-	return precio
-
 @app.route('/add_carrito/<id>/<n>',methods=['GET','POST'])
 def add_carrito(id, n):
 	prod_id = id
 	orderid = db.getIDCarrito()
+	#comprobar que hay stock suficiente
+	stock = db.getStock(prod_id)
+	quantityEnCarrito = db.quantityEnCarrito(orderid,prod_id)
+	if (stock - int(n) - quantityEnCarrito)<0:
+		return jsonify(result=str(stock - quantityEnCarrito))
+	
 	if db.inCarrito(id, orderid) == False: #la peli no esta en el carrito
 		db.insertOrderdetail(orderid, prod_id, n)
 	else: #modificar cantidad de dicha peli
 		db.updateOrderdetail(orderid, prod_id, n)
-	return jsonify()
+	return jsonify(result = "OK")
 
 @app.route('/comprar',methods=['GET','POST'])
 def comprar():
@@ -232,8 +232,8 @@ def comprar():
 def borrar(id):
 	orderid = db.getIDCarrito()
 	db.deleteOrderdetail(orderid, id)
-	r = db.getTotal(db.getIDCarrito())
-	return jsonify(result="OK", precio = str(r))	
+	r = str(db.getTotal(db.getIDCarrito()))
+	return jsonify(result="OK", precio = r[:r.find(".")+2])	
 
 @app.route('/actualizar_banner', methods=['GET','POST'])
 def actualizar_banner():
@@ -246,3 +246,4 @@ def privacidad():
 
 if __name__ == '__main__':
 	app.run(debug = True)
+

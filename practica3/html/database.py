@@ -11,18 +11,6 @@ db_meta = MetaData(bind=db_engine, reflect = True)
 # conexion a la base de datos
 db_conn = db_engine.connect()
 
-def db_listOfMovies1949():
-    try:
-        # cargar tabla de la metadata
-        db_table_movies = db_meta.tables['imdb_movies']
-        # seleccionar las peliculas del anno 1949
-        db_movies_1949 = select([db_table_movies]).where("year = '1949'")
-        db_result = db_conn.execute(db_movies_1949)
-        #db_result = db_conn.execute("Select * from imdb_movies where year = '1949'")
-        return  list(db_result)
-    except:
-        return 'Something is broken'
-
 def existeEmail(email):
     query = text('select * from customers where email=:e')
     return list(db_conn.execute(query, e = email).fetchall())
@@ -205,7 +193,6 @@ def iniciarCarrito():
     actualizaIDOrders()
 
 
-
 def actualizaIDOrders():
     query = text("SELECT setval('orders_orderid_seq', (SELECT max(orderid) FROM orders))")
     db_result = db_conn.execute(query).fetchall()
@@ -269,4 +256,15 @@ def comprar(orderid, customerid):
     db_conn.execute(query, i=customerid, n=total)
 
 
+def getStock(prod_id):
+    query = text('select stock from inventory where prod_id=:p')
+    result = list(db_conn.execute(query, p=prod_id).fetchall())
+    stock = result[0][0]
+    return stock
 
+def quantityEnCarrito(orderid, prod_id):
+    query = text('select quantity from orderdetail where prod_id=:p and orderid=:o')
+    result = list(db_conn.execute(query, p=prod_id, o=orderid).fetchall())
+    if result == []:
+        return 0
+    return result[0][0]

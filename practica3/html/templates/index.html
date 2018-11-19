@@ -18,7 +18,17 @@
 					cache: false,
 					type: 'POST',
 					success: function(response) {
-						alert("Has añadido esta pelicula a tu carrito :)");
+						if(response.result == "OK"){
+							alert("Has añadido esta pelicula a tu carrito :)");
+						}else{
+							if(response.result == "0"){
+								alert("Lo sentimos, no hay stock suficiente.")
+							}else if(response.result == "1"){
+								alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidad para esta pelicula");
+							}else{
+								alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidades para esta pelicula");
+							}
+						}
 					}
 				});
 			}
@@ -44,7 +54,7 @@
 				<div id="cabecera">
 					<a href="{{url_for('index')}}"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
 					<div id="head-center">
-						<form action="{{url_for('buscar')}}" name="buscador" method="post">
+						<form action="{{url_for('buscar')}}" name="buscador" method="post" id ="prueba">
 							<select id=filtro name="FiltrarPorGenero">
 								<option selected disabled hidden>Genero</option>
 								{% for categoria in content['categorias'] %}
@@ -86,7 +96,7 @@
 						<div class="fila">
 						{% for peli in content['peliculas'] %}
 							<div class="pelicula">
-								<a href="{{url_for('pelicula', prod_id=peli['id'])}}"><img src="{{url_for('static',filename=peli['poster'])}}" alt= "{{peli['titulo']}}" class="imgs"></a>
+								<a href="{{url_for('pelicula', prod_id=peli['id'])}}"><img src="../static/imgs/caratula.jpg" alt= "{{peli['titulo']}}" class="imgs"></a>
 								<p id="long_titulo"> {{peli['titulo']}}</p>
 								<p> {{peli['precio']}}</p>
 								<input type="submit" value="Añadir al carrito" class="botones" onclick="add_carrito({{peli['id']}})">

@@ -19,7 +19,13 @@
 					cache: false,
 					type: 'POST',
 					success: function(response) {
-						alert("Has añadido esta pelicula a tu carrito :)");
+						if(response.result == "0"){
+								alert("Lo sentimos, no hay stock suficiente.")
+						}else if(response.result == "1"){
+							alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidad para esta pelicula");
+						}else{
+							alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidades para esta pelicula");
+						}
 					}
 				});
 			}
@@ -81,7 +87,7 @@
 				<div id="contenido">
 					{% if content['pelicula'] %}
 					<div id="desc-peli">
-						<img src="{{url_for('static',filename=content['pelicula']['poster'])}}" id="caratula" alt="caratula">
+						<img src="../static/imgs/caratula.jpg" id="caratula" alt="caratula">
 						<div id="desc">
 							<b id="titulo">{{ content['pelicula']['titulo'] }}</b>
 							<div id="resumen">
