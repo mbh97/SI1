@@ -81,7 +81,10 @@ def actualizaIDCustomers():
     db_result = db_conn.execute(query).fetchall()
 
 def getNovedades():
-    query = text("select prod_id, movietitle, price from imdb_movies inner join products using(movieid) order by year desc limit 20")
+    query = text("select prod_id, movietitle, price \
+                  from imdb_movies inner join products using(movieid) \
+                  where prod_id NOT IN (select prod_id from alerta)\
+                  order by year desc limit 20")
     result = list(db_conn.execute(query).fetchall())
     pelis = []
     for r in result:
@@ -99,6 +102,7 @@ def getTopVentas():
                   from imdb_movies\
                   inner join products using(movieid) \
                   inner join inventory using(prod_id) \
+                  where prod_id NOT IN (select prod_id from alerta)\
                   order by sales desc limit 20')
     result = list(db_conn.execute(query).fetchall())
     pelis = []
@@ -117,7 +121,7 @@ def getCategoria(categoria):
                   inner join imdb_moviegenres using(movieid)\
                   inner join imdb_genres using(genreid)\
                   inner join products using(movieid)\
-                  where genre = :c')
+                  where genre = :c and prod_id NOT IN (select prod_id from alerta)')
     result = list(db_conn.execute(query, c=categoria).fetchall())
     pelis = []
     for r in result:
@@ -175,7 +179,6 @@ def getInfo(prod_id):
                   inner join imdb_directormovies using(movieid)\
                   inner join imdb_directors using(directorid)\
                   where prod_id=:i')
-    print prod_id
     r = list(db_conn.execute(query, i=prod_id).fetchall())[0]
     dic={
         'id':prod_id, 

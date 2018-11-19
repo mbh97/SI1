@@ -11,7 +11,6 @@ import database as db
 
 app = Flask(__name__)
 app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits)for _ in range(20))
-catalogo = json.loads(open(os.path.join(app.root_path,'catalogo.json')).read(), strict=False)
 
 @app.route('/')
 def index():

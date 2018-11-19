@@ -76,7 +76,7 @@
 				<div id="cabecera">
 					<a href="{{url_for('index')}}"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
 					<div id="head-center">
-						<form action="{{url_for('buscar')}}" name="buscador" method="post">
+						<form action="{{url_for('buscar')}}" name="buscador" method="post" id ="prueba">
 							<select id=filtro name="FiltrarPorGenero">
 								<option selected disabled hidden>Genero</option>
 								{% for categoria in content['categorias'] %}
