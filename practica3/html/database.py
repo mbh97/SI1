@@ -142,52 +142,67 @@ def getCategorias():
     return categorias
 
 def getPelis(titulo):
-    query = text('select prod_id, price from imdb_movies inner join products using(movieid) where movietitle=:t')
-    result = list(db_conn.execute(query, t=titulo).fetchall())
+    query = text('select prod_id, price, movietitle \
+                  from imdb_movies \
+                  inner join products using(movieid) \
+                  where lower(movietitle) like lower(:t)')
+    result = list(db_conn.execute(query, t='%'+titulo+'%').fetchall())
     pelis = []
     for r in result:
         dic={
             'id':r[0], 
-            'titulo':titulo, 
+            'titulo':r[2], 
             'precio':r[1] 
         }
         pelis.append(dic)
     return pelis
 
 def pertenece(titulo, genero):
-    query = text('select prod_id, price \
+    query = text('select prod_id, price, movietitle \
                   from imdb_movies \
                   inner join products using(movieid) \
                   inner join imdb_moviegenres using(movieid)\
                   inner join imdb_genres using(genreid)\
-                  where movietitle=:t and genre=:g')
-    result = list(db_conn.execute(query, t=titulo, g=genero).fetchall())
+                  where lower(movietitle) like lower(:t) and genre=:g')
+    result = list(db_conn.execute(query, t='%'+titulo+'%', g=genero).fetchall())
     pelis = []
     for r in result:
         dic={
             'id':r[0], 
-            'titulo':titulo, 
+            'titulo':r[2], 
             'precio':r[1] 
         }
         pelis.append(dic)
     return pelis
 
 def getInfo(prod_id):
-    query = text('select movietitle, imdb_movies.description, price, directorname,year \
-                  from imdb_movies \
-                  inner join products using(movieid) \
-                  inner join imdb_directormovies using(movieid)\
-                  inner join imdb_directors using(directorid)\
-                  where prod_id=:i')
-    r = list(db_conn.execute(query, i=prod_id).fetchall())[0]
+    query1 = text('select movietitle, imdb_movies.description, price,year \
+                      from imdb_movies \
+                      inner join products using(movieid) \
+                      where prod_id=:i')
+    r = list(db_conn.execute(query1, i=prod_id).fetchall())[0]
     dic={
         'id':prod_id, 
         'titulo':r[0], 
         'precio':r[2],
         'informacion':r[1],
-        'director':r[3],
-        'anno':r[4]
+        'anno':r[3]
     }
+    query2 = text('select * from imdb_movies inner join products using(movieid) inner join imdb_directormovies using (movieid) where prod_id=:p')
+    r2 = list(db_conn.execute(query2, p=prod_id).fetchall())
+    if r2 ==[]:
+        director="Incognita"
+    else:
+        query3 = text('select directorname \
+                      from imdb_movies \
+                      inner join products using(movieid) \
+                      inner join imdb_directormovies using(movieid)\
+                      inner join imdb_directors using(directorid)\
+                      where prod_id=:i')
+        r3 = list(db_conn.execute(query3, i=prod_id).fetchall())[0]
+        director = r[0]
+    dic['director'] = director
+    
     return dic
 
 def iniciarCarrito():
