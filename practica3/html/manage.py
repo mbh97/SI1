@@ -81,9 +81,13 @@ def buscar():
 
 @app.route('/micuenta')
 def micuenta():
+	content_dict ={}
+	content_dict['categorias'] = db.getCategorias()
+
 	if session.get('logged_in') == False:
 		email = getCookie()
-		return render_template('sesion.html', content = email)
+		content_dict['email'] = email
+		return render_template('sesion.html', content=content_dict)
 	# USUARIO LOGEADO ==> HISTORIAL
 	customerid = session['customerid']
 	datos = db.getDatosUsuario(customerid)
@@ -93,7 +97,7 @@ def micuenta():
 	usuario_dict['email'] = datos['email']
 	usuario_dict['saldo'] = datos['income']
 	historial = db.getHistorialUsuario(customerid)
-	return render_template('micuenta.html', usuario = usuario_dict, historial = historial)
+	return render_template('micuenta.html', usuario = usuario_dict, historial = historial, content=content_dict)
 
 @app.route('/top_ventas')
 def top():
@@ -106,6 +110,7 @@ def top():
 @app.route('/registro')
 def registro():
 	content_dict = {}
+	content_dict['categorias'] = db.getCategorias()
 	return render_template('registro.html', content = content_dict)
 
 def get_datos_usuario(usuario):
