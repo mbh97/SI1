@@ -6,46 +6,28 @@
 		<link rel="stylesheet" type="text/css"  href="../static/css/style.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<title>Carrito</title>
+		<title>Inicio</title>
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script language="javascript">
 			base_url="{{url_for('index')}}"
-			function comprar(){
+			function add_carrito(id){
 				event.preventDefault();
 				$.ajax({
-					url: "{{url_for('comprar')}}",
+					url: base_url.concat("add_carrito/").concat(id).concat("/1"),
 					cache: false,
 					type: 'POST',
 					success: function(response) {
-						if(response.result == "NOT_SESSION"){
-							alert("Antes de realizar la compra, tienes que iniciar sesion o registrarte.");
-							location.href = "{{url_for('micuenta')}}";
-						}else if(response.result == "NOT_MONEY"){
-							alert("Vaya, no tienes un saldo suficiente en tu tarjeta. Prueba a eliminar algunas peliculas.");
-						}else if(response.result == "NOT_CARRITO"){
-							alert("No hay peliculas en el carrito!");
-						}
-						else{
-							alert("Has realizado tu compra correctamente! Ya puedes disfrutar de las peliculsa adquiridas.");
-							location.href = "{{url_for('carrito')}}";
-						}
-					}
-				});
-			}
-
-			function borrar(id) {
-   				event.preventDefault();
-   				document.getElementById(id).remove();
-    			$.ajax({
-					url: base_url.concat("borrar/").concat(id),
-					cache: false,
-					type: 'POST',
-					success: function(response) {
-						if(response.precio == 0){
-							location.href = "{{url_for('carrito')}}"
+						if(response.result == "OK"){
+							alert("Has añadido esta pelicula a tu carrito :)");
 						}else{
-							document.getElementById("precio").innerHTML = response.precio;
+							if(response.result == "0"){
+								alert("Lo sentimos, no hay stock suficiente.")
+							}else if(response.result == "1"){
+								alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidad para esta pelicula");
+							}else{
+								alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidades para esta pelicula");
+							}
 						}
 					}
 				});
@@ -63,6 +45,7 @@
 			   	});
 			   	setTimeout("actualizar_banner()",3000)
 			}
+
 		</script>
 	</head>
 
@@ -74,7 +57,7 @@
 						<form action="{{url_for('buscar')}}" name="buscador" method="post" id ="prueba">
 							<select id=filtro name="FiltrarPorGenero">
 								<option selected disabled hidden>Genero</option>
-								{% for categoria in categorias %}
+								{% for categoria in content['categorias'] %}
 									<option value="{{categoria}}">{{categoria}}</option>
 								{% endfor %}
 							</select>
@@ -94,7 +77,7 @@
 				<div id="menu">
 					<h1 id="categorias"><b>Categorias</b></h1>
 					<ul>
-						{% for categoria in categorias %}
+						{% for categoria in content['categorias'] %}
 							<li><a href="{{url_for('mostrar_categoria', categoria = categoria)}}">{{categoria}}</a></li>
 						{%endfor%}
 					</ul>
@@ -106,43 +89,53 @@
 				</div>
 
 				<div id="contenido">
-					<div id="cont-carrito">
-						<b class="max-letra">Tu carrito</b>
-						{% if carrito %}
-						<div id="tabla_carrito">
-							<table class="pedidos" id="tabla-carrito">
+					{% if content['top']%}
+						<div id="sales">
+							<table class="pedidos">
 	  							<tr>
-	    							<th>Titulo</th>
-									<th>Unidades</th>
-									<th>Precio EUR</th>
-									<th>Eliminar</th>
+	    							<th>Anno</th>
+									<th>Pelicula</th>
+									<th>Ventas</th>
 	  							</tr>
-	  							{% for dic in carrito %}
-		  							<tr id = "{{dic['id']}}">
-		    							<td>{{ dic['titulo'] }}</td>
-										<td>{{dic['cantidad']}}</td>
-										<td>{{dic['precio']}}</td>
-										<td><INPUT class ="borrar" type="radio" name="eliminar" value="eliminar" onclick="borrar({{dic['id']}})"></td>
+	  							{% for dic in content['top'] %}
+		  							<tr>
+		    							<td>{{dic['year'] }}</td>
+										<td>{{dic['titulo']}}</td>
+										<td>{{dic['sales']}}</td>
 		  							</tr>
 		  						{% endfor %}
 							</table>
 						</div>
-						<div id="total">
-							<b>Total:</b>
-							<div id="precio">{{precio}}</div>
-						</div>
-						<input type="submit" value="COMPRAR" class="normal-boton" id="comprar" onclick="comprar()">
-						{% else %}
-							<p> Tu carrito esta vacio, ¿a que esperas para empezar a comprar?</p>
-						{% endif %}
+					{% endif %}
+					<div id="head-tema">
+						<hr class="linea"><b id="tema">{{ content['categoriaActual'] }}</b><hr class="linea">
 					</div>
+					{% if content['peliculas'] %}
+						<div class="fila">
+						{% for peli in content['peliculas'] %}
+							<div class="pelicula">
+								<a href="{{url_for('pelicula', prod_id=peli['id'])}}"><img src="../static/imgs/caratula.jpg" alt= "{{peli['titulo']}}" class="imgs"></a>
+								<p id="long_titulo"> {{peli['titulo']}}</p>
+								<p> {{peli['precio']}}</p>
+								<input type="submit" value="Añadir al carrito" class="botones" onclick="add_carrito({{peli['id']}})">
+							</div>
+							{% if loop.index == loop.last %}
+								</div>
+							{% else %}
+								{% if loop.index%3 == 0 %}
+									</div>
+									<div class="fila">
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
 				</div>
 			</div>
 			<footer>
-				<div id="pie">
-					<p>Puedes seguirnos en </p>
-					<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
-				</div>
+					<div id="pie">
+						<p>Puedes seguirnos en </p>
+						<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
+					</div>
 			</footer>
 	</body>
 </html>
