@@ -29,6 +29,7 @@ def index():
 	content_dict['peliculas'] = db.getNovedades()
 	content_dict['categoriaActual'] = 'Ultimas novedades'
 	content_dict['categorias'] = db.getCategorias()
+	content_dict['top'] = db.getTop()
 	return render_template('index.html', content = content_dict)
 
 @app.route('/categorias/<categoria>')

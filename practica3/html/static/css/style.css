@@ -151,6 +151,12 @@ li {
 
 /** PPAL **/
 
+
+#sales{
+	margin-left:150px;
+	margin-bottom: 30px
+}
+
 #head-tema{
 	display: flex;
 	margin-left:150px;

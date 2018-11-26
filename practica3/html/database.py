@@ -286,3 +286,16 @@ def quantityEnCarrito(orderid, prod_id):
     if result == []:
         return 0
     return result[0][0]
+
+def getTop():
+    query = text("SELECT * FROM getTopVentas(cast((SELECT date_part('year', current_date)) as integer)-2)")
+    result = list(db_conn.execute(query).fetchall())
+    top = []
+    for r in result:
+        dic ={
+            'year':r[0],
+            'titulo':r[1],
+            'sales':r[2]
+        }
+        top.append(dic)
+    return top

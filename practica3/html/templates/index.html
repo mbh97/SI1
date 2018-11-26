@@ -89,6 +89,24 @@
 				</div>
 
 				<div id="contenido">
+					{% if content['top']%}
+						<div id="sales">
+							<table class="pedidos">
+	  							<tr>
+	    							<th>Anno</th>
+									<th>Pelicula</th>
+									<th>Ventas</th>
+	  							</tr>
+	  							{% for dic in content['top'] %}
+		  							<tr>
+		    							<td>{{dic['year'] }}</td>
+										<td>{{dic['titulo']}}</td>
+										<td>{{dic['sales']}}</td>
+		  							</tr>
+		  						{% endfor %}
+							</table>
+						</div>
+					{% endif %}
 					<div id="head-tema">
 						<hr class="linea"><b id="tema">{{ content['categoriaActual'] }}</b><hr class="linea">
 					</div>
