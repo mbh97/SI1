@@ -15,9 +15,11 @@ app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits)fo
 @app.route('/')
 def index():
 	content_dict = {}
+	orderid = db.getIDCarrito()
 
 	if session.get('logged_in') == None:
 		session['logged_in'] = False
+		session.modified = True
 		db.iniciarCarrito()
 
 	content_dict['peliculas'] = db.getNovedades()
@@ -62,7 +64,7 @@ def buscar():
 	genero = request.form['FiltrarPorGenero']
 	if titulo == "":
 		return mostrar_categoria(genero)
-	
+
 	pelis = db.pertenece(titulo, genero)
 	if pelis == []:
 		return render_template('pelicula.html', content = pelis)
@@ -74,7 +76,7 @@ def buscar():
 	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content=content_dict)
 
-@app.route('/micuenta')
+@app.route('/micuenta',methods=['GET','POST'])
 def micuenta():
 	content_dict ={}
 	content_dict['categorias'] = db.getCategorias()
@@ -84,7 +86,7 @@ def micuenta():
 		content_dict['email'] = email
 		return render_template('sesion.html', content=content_dict)
 	# USUARIO LOGEADO ==> HISTORIAL
-	customerid = session['customerid']
+	customerid = session.get('customerid')
 	datos = db.getDatosUsuario(customerid)
 
 	usuario_dict = {}
@@ -94,7 +96,7 @@ def micuenta():
 	historial = db.getHistorialUsuario(customerid)
 	return render_template('micuenta.html', usuario = usuario_dict, historial = historial, content=content_dict)
 
-@app.route('/top_ventas')
+@app.route('/top_ventas',methods=['GET','POST'])
 def top():
 	content_dict = {}
 	content_dict['categoriaActual'] = 'TOP VENTAS'
@@ -102,7 +104,7 @@ def top():
 	content_dict['categorias'] = db.getCategorias()
 	return render_template('index.html', content = content_dict)
 
-@app.route('/registro')
+@app.route('/registro',methods=['GET','POST'])
 def registro():
 	content_dict = {}
 	content_dict['categorias'] = db.getCategorias()
@@ -120,6 +122,7 @@ def signIn():
 		session['logged_in'] = True
 		session['customerid'] = customerid
 		session.modified = True
+		db.setCustomer(customerid)
 	return jsonify(result=r)
 
 
@@ -134,16 +137,18 @@ def signUp():
 	if r != "ERROR_EMAIL":
 		session['logged_in'] = True
 		session['customerid'] = r #id
+		session.modified = True
+		db.setCustomer(r)
 		return jsonify(result=email)
 
 	return jsonify(result=r)
 
-@app.route('/cerrar_sesion')
+@app.route('/cerrar_sesion',methods=['GET','POST'])
 def signOut():
 	session['logged_in'] = None
 	return redirect(url_for('index'))
 
-@app.route('/set_cookie/<usuario>')
+@app.route('/set_cookie/<usuario>',methods=['GET','POST'])
 def setCookie(usuario):
 	resp = make_response(index())
 	resp.set_cookie('userID', usuario)
@@ -153,7 +158,7 @@ def getCookie():
 	email = request.cookies.get('userID')
 	return email
 
-@app.route('/carrito')
+@app.route('/carrito',methods=['GET','POST'])
 def carrito():
 	orderid = db.getIDCarrito()
 	carrito = db.getOrderdetails(orderid)
@@ -175,7 +180,7 @@ def add_carrito(id, n):
 	quantityEnCarrito = db.quantityEnCarrito(orderid,prod_id)
 	if (stock - int(n) - quantityEnCarrito)<0:
 		return jsonify(result=str(stock - quantityEnCarrito))
-	
+
 	if db.inCarrito(id, orderid) == False: #la peli no esta en el carrito
 		db.insertOrderdetail(orderid, prod_id, n)
 	else: #modificar cantidad de dicha peli
@@ -199,6 +204,8 @@ def comprar():
 
 	db.comprar(orderid, customerid)
 	db.iniciarCarrito()
+	db.setCustomer(customerid
+	)
 
 	return jsonify(result="OK")
 
@@ -207,7 +214,7 @@ def borrar(id):
 	orderid = db.getIDCarrito()
 	db.deleteOrderdetail(orderid, id)
 	r = str(db.getTotal(db.getIDCarrito()))
-	return jsonify(result="OK", precio = r[:r.find(".")+2])	
+	return jsonify(result="OK", precio = r[:r.find(".")+2])
 
 @app.route('/actualizar_banner', methods=['GET','POST'])
 def actualizar_banner():
@@ -220,4 +227,3 @@ def privacidad():
 
 if __name__ == '__main__':
 	app.run(debug = True)
-

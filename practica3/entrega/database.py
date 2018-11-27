@@ -34,7 +34,7 @@ def getDatosUsuario(id):
     return result[0]
 
 def getHistorialUsuario(id):
-    query = text('select * from orders where customerid=:i')
+    query = text("select * from orders where customerid=:i and status='Paid'")
     result = list(db_conn.execute(query, i = id).fetchall())
     historial = []
     for r in result:
@@ -89,9 +89,9 @@ def getNovedades():
     pelis = []
     for r in result:
         dic={
-            'id':r[0], 
-            'titulo':r[1], 
-            'precio':r[2] 
+            'id':r[0],
+            'titulo':r[1],
+            'precio':r[2]
         }
         pelis.append(dic)
     return pelis
@@ -108,9 +108,9 @@ def getTopVentas():
     pelis = []
     for r in result:
         dic={
-            'id':r[0], 
-            'titulo':r[1], 
-            'precio':r[2] 
+            'id':r[0],
+            'titulo':r[1],
+            'precio':r[2]
         }
         pelis.append(dic)
     return pelis
@@ -126,9 +126,9 @@ def getCategoria(categoria):
     pelis = []
     for r in result:
         dic={
-            'id':r[0], 
-            'titulo':r[1], 
-            'precio':r[2] 
+            'id':r[0],
+            'titulo':r[1],
+            'precio':r[2]
         }
         pelis.append(dic)
     return pelis
@@ -150,9 +150,9 @@ def getPelis(titulo):
     pelis = []
     for r in result:
         dic={
-            'id':r[0], 
-            'titulo':r[2], 
-            'precio':r[1] 
+            'id':r[0],
+            'titulo':r[2],
+            'precio':r[1]
         }
         pelis.append(dic)
     return pelis
@@ -168,9 +168,9 @@ def pertenece(titulo, genero):
     pelis = []
     for r in result:
         dic={
-            'id':r[0], 
-            'titulo':r[2], 
-            'precio':r[1] 
+            'id':r[0],
+            'titulo':r[2],
+            'precio':r[1]
         }
         pelis.append(dic)
     return pelis
@@ -182,8 +182,8 @@ def getInfo(prod_id):
                       where prod_id=:i')
     r = list(db_conn.execute(query1, i=prod_id).fetchall())[0]
     dic={
-        'id':prod_id, 
-        'titulo':r[0], 
+        'id':prod_id,
+        'titulo':r[0],
         'precio':r[2],
         'informacion':r[1],
         'anno':r[3]
@@ -202,7 +202,7 @@ def getInfo(prod_id):
         r3 = list(db_conn.execute(query3, i=prod_id).fetchall())[0]
         director = r[0]
     dic['director'] = director
-    
+
     return dic
 
 def iniciarCarrito():
@@ -263,7 +263,7 @@ def getTotal(orderid):
     query = text('select totalamount from orders where orderid=:o')
     result = db_conn.execute(query, o=orderid).fetchall()
     price = result[0][0]
-    return price 
+    return price
 
 def comprar(orderid, customerid):
     query = text('update orders set status=:s where orderid=:o')
@@ -299,3 +299,8 @@ def getTop():
         }
         top.append(dic)
     return top
+
+def setCustomer(customerid):
+    orderid = getIDCarrito()
+    query = text("update orders set customerid=:c where orderid=:o")
+    db_conn.execute(query,c=customerid,o=orderid)
