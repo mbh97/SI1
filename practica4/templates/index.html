@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css"  href="../static/css/style.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<title>Inicio</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script language="javascript">
+			base_url="{{url_for('index')}}"
+			function add_carrito(id){
+				event.preventDefault();
+				$.ajax({
+					url: base_url.concat("add_carrito/").concat(id).concat("/1"),
+					cache: false,
+					type: 'POST',
+					success: function(response) {
+						if(response.result == "OK"){
+							alert("Has añadido esta pelicula a tu carrito :)");
+						}else{
+							if(response.result == "0"){
+								alert("Lo sentimos, no hay stock suficiente.")
+							}else if(response.result == "1"){
+								alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidad para esta pelicula");
+							}else{
+								alert("No hay stock suficiente. Solo disponibles "+response.result+ " unidades para esta pelicula");
+							}
+						}
+					}
+				});
+			}
+
+			function actualizar_banner(){
+			   	$.ajax({
+			   	url: "{{url_for('actualizar_banner')}}",
+					cache: false,
+					type: 'POST',
+					success: function(response) {
+						$("#banner").text("Usuarios conectados: " + response.conectados);
+						$("#banner").css('font-weight', 'bold');
+					}
+			   	});
+			   	setTimeout("actualizar_banner()",3000)
+			}
+
+		</script>
+	</head>
+
+	<body onload="actualizar_banner()">
+			<header>
+				<div id="cabecera">
+					<a href="{{url_for('index')}}"><img src="../static/imgs/logo.png" alt="logo el proyector" id="logo"/></a>
+					<div id="head-center">
+						<form action="{{url_for('buscar')}}" name="buscador" method="post" id ="prueba">
+							<select id=filtro name="FiltrarPorGenero">
+								<option selected disabled hidden>Genero</option>
+								{% for categoria in content['categorias'] %}
+									<option value="{{categoria}}">{{categoria}}</option>
+								{% endfor %}
+							</select>
+		      				<input id="text-buscar" type="text" placeholder="Buscar..." name="titulo">
+		      				<button id="boton-buscar" type="submit" ><i class="material-icons">search</i></button>
+		      			</form>
+					</div>
+					<div id="head-right">
+						<form action="{{url_for('micuenta')}}">
+    						<input type="submit" value="Mi cuenta" class="max-boton">
+						</form>
+						<a href="{{url_for('carrito')}}"><img src="../static/imgs/carrito.png" alt="carrito" id="carrito"/></a>
+					</div>
+				</div>
+			</header>
+			<div id="cont">
+				<div id="menu">
+					<h1 id="categorias"><b>Categorias</b></h1>
+					<ul>
+						{% for categoria in content['categorias'] %}
+							<li><a href="{{url_for('mostrar_categoria', categoria = categoria)}}">{{categoria}}</a></li>
+						{%endfor%}
+					</ul>
+					<form action="{{url_for('top')}}">
+						<input type="submit" value="TOP VENTAS" class="normal-boton">
+					</form>
+					<br>
+					<div id="banner"></div>
+				</div>
+
+				<div id="contenido">
+					{% if content['top']%}
+						<div id="sales">
+							<table class="pedidos">
+	  							<tr>
+	    							<th>Anno</th>
+									<th>Pelicula</th>
+									<th>Ventas</th>
+	  							</tr>
+	  							{% for dic in content['top'] %}
+		  							<tr>
+		    							<td>{{dic['year'] }}</td>
+										<td>{{dic['titulo']}}</td>
+										<td>{{dic['sales']}}</td>
+		  							</tr>
+		  						{% endfor %}
+							</table>
+						</div>
+					{% endif %}
+					<div id="head-tema">
+						<hr class="linea"><b id="tema">{{ content['categoriaActual'] }}</b><hr class="linea">
+					</div>
+					{% if content['peliculas'] %}
+						<div class="fila">
+						{% for peli in content['peliculas'] %}
+							<div class="pelicula">
+								<a href="{{url_for('pelicula', prod_id=peli['id'])}}"><img src="../static/imgs/caratula.jpg" alt= "{{peli['titulo']}}" class="imgs"></a>
+								<p id="long_titulo"> {{peli['titulo']}}</p>
+								<p> {{peli['precio']}}</p>
+								<input type="submit" value="Añadir al carrito" class="botones" onclick="add_carrito({{peli['id']}})">
+							</div>
+							{% if loop.index == loop.last %}
+								</div>
+							{% else %}
+								{% if loop.index%3 == 0 %}
+									</div>
+									<div class="fila">
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<footer>
+					<div id="pie">
+						<p>Puedes seguirnos en </p>
+						<img src="../static/imgs/iconos.png" id="iconos" alt="iconos">
+					</div>
+			</footer>
+	</body>
+</html>
